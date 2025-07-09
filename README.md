@@ -1,14 +1,14 @@
 # NCBoost v2.0.0 []()  
 
-NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a curated collection of 737 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost paper]().
+NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost paper]().
 
 Of note, the NCBoost software can score any type of genomic position, provided that the required puryfing selection features used by the model are available. However, it is important to realize that, among the set of high-confidence pathogenic non-coding variants that were used to train NCBoost, more than 98%  were found at proximal cis-regulatory regions, with only 10 variants overlapping more distal intergenic regions. Thus, for consistency with the training process, the most reliable genomic contexts for the use of the NCBoost score are the proximal cis-regulatory regions of protein-coding genes.
 
 ## Precomputed NCBoost scores in proximal cis-regulatory regions of protein-coding genes
 
-We precomputed the NCBoost score for 857'825'085 non-coding genomic positions overlapping intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TSE), respectively- associated with a background set of [18404 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/NCBoost_data/NCBoost_geneDB.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg19). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost paper](https://rdcu.be/bmlxX).
+We precomputed the NCBoost score for XXXXXX non-coding genomic positions overlapping intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/NCBoost_data/NCBoost_geneDB.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost v2 paper]().
 
-The precomputed NCBoost scores in proximal cis-regulatory regions of protein-coding genes can be downloaded [here]() as a tabix indexed file (gz):
+The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded [here]() as a tabix indexed file (gz):
 https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v2025XXXX.tsv.gz
 and the corresponding index file is available [here]() (gz.tbi):
 https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v2025XXXX.tsv.gz.tbi
@@ -18,12 +18,12 @@ The file contains the following columns:
 *pos*, 1-based genomic position (GrCh38.p13 genome assembly)  
 *region*, type of non-coding region overlapping the position, as provided by ANNOVAR (see above)  
 *closest_gene_name*, name of the associated protein-coding gene  
-*NCBoost_Score*, NCBoost score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
-*NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost score. The higher the rank percentile, the higher the pathogenic potential of the position.  
+*NCBoost_Score*, NCBoost v2 score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
+*NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost software
 
-The NCBoost software is also provided in this repository in case you are interested in assessing the NCBoost scores for genomic positions other than those included in the previous precomputed file. The following sections will guide you through the steps needed for the variant annotation and feature extraction as well as the execution of the gradient tree boosting model implemented in NCBoost to obtain the pathogenicity score.
+The NCBoost software is also provided in this repository in case you are interested in assessing the NCBoost scores for genomic positions other than those included in the precomputed file. The following sections will guide you through the steps needed for the variant annotation and feature extraction as well as the execution of the gradient tree boosting model implemented in NCBoost to obtain the pathogenicity score.
 
 
 ## Downloads, installation and processing of input files
