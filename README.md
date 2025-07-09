@@ -15,11 +15,11 @@ https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v2025XXXX.tsv.gz.t
 
 The file contains the following columns:  
 *chr*, chromosome name, as [1:22,X,Y]  
-*pos*, 1-based genomic position (GrCh37.p13 genome assembly)  
+*pos*, 1-based genomic position (GrCh38.p13 genome assembly)  
 *region*, type of non-coding region overlapping the position, as provided by ANNOVAR (see above)  
 *closest_gene_name*, name of the associated protein-coding gene  
 *NCBoost_Score*, NCBoost score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
-*NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost score. The higher the rank percentile,  the higher the pathogenic potential of the position.  
+*NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost software
 
@@ -28,15 +28,14 @@ The NCBoost software is also provided in this repository in case you are interes
 
 ## Downloads, installation and processing of input files
 
-### 1. Software and libraries downloads
+### 1. Software and database downloads
 
 NCBoost scripts and associated data may be cloned from the NCBoost github repository:
 ```
-git clone https://github.com/RausellLab/NCBoost.git
-cd NCBoost
+git clone https://github.com/RausellLab/NCBoost2.git
+cd NCBoost2
 ```
-In addition, the annotation and scoring pipeline requires [tabix](http://www.htslib.org/doc/tabix.html) and a number of python and R libraries.  
-The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost/blob/master/libraries.txt).
+The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.txt).
 
 Python3 libraries can be installed using:  
 `pip install -r libraries.txt`
