@@ -2,7 +2,7 @@
 
 NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost paper]().
 
-Of note, the NCBoost software can score any type of genomic position, provided that the required puryfing selection features used by the model are available. However, it is important to realize that, among the set of high-confidence pathogenic non-coding variants that were used to train NCBoost, more than 98%  were found at proximal cis-regulatory regions, with only 10 variants overlapping more distal intergenic regions. Thus, for consistency with the training process, the most reliable genomic contexts for the use of the NCBoost score are the proximal cis-regulatory regions of protein-coding genes.
+Of note, the NCBoost software can score any type of genomic position, provided that the required puryfing selection features used by the model are available. However, it is important to realize that, among the set of high-confidence pathogenic non-coding variants that were used to train NCBoost, more than 98%  were found at proximal cis-regulatory regions, with only 27 variants overlapping more distal intergenic regions. Thus, for consistency with the training process, the most reliable genomic contexts for the use of the NCBoost score are the proximal cis-regulatory regions of protein-coding genes.
 
 ## Precomputed NCBoost scores in proximal cis-regulatory regions of protein-coding genes
 
@@ -32,32 +32,25 @@ The NCBoost software is also provided in this repository in case you are interes
 
 NCBoost scripts and associated data may be cloned from the NCBoost github repository:
 ```
-git clone https://github.com/RausellLab/NCBoost2.git
-cd NCBoost2
+git clone https://github.com/RausellLab/NCBoost-2.git
+cd NCBoost-2
 ```
 The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.txt).
 
 Python3 libraries can be installed using:  
 `pip install -r libraries.txt`
 
-xgboost (version 0.71.1) R library can be installed from  
-`https://cloud.r-project.org/src/contrib/xgboost_0.71.1.tar.gz`
-
-ANNOVAR [[1]](https://github.com/RausellLab/NCBoost#references), a perl-based tool, can be downloaded [here](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) (after registration). Download should be done into the folder `NCBoost/`.
-
-### 2. Download and processing of the feature files mined by NCBoost
+### 2. Download and processing of the feature file
 
 #### A - Download of feature files
 
+NCBoost 2 features are available [here]().
 The gene-level features used by NCBoost are provided as part of this repository and described [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data).  
 All the rest of feature files (position-level and window-level features) need to be downloaded executing the script `get_selection_features.sh`.
 
 The script uses wget and gsutil to download the different data files from the original sources in the NCBoost_features/ folder.
 It may be run using the following command line from the root NCBoost folder:
 
-```
-./NCBoost_scripts/get_selection_features.sh TRUE 
-```
 The total size of the feature data files is about 450Go, so it might be long...
 Complete details about the associated source feature files are provided [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_features).
 
