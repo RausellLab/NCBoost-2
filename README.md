@@ -23,7 +23,7 @@ The file contains the following columns:
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost gene database
-The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here]().
+The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data/geneDB_ncboost2.tsv).
 
 ## NCBoost software
 The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
@@ -53,7 +53,7 @@ NCBoost 2 features are available [here](). Compressed tabix-indexed files are pr
 wget ...
 ```
 Once downloaded, 
-The gene-level features used by NCBoost are provided as part of this repository and described [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data).  
+The gene-level features used by NCBoost are provided as part of this repository and described [here](NCBoost_data).  
 
 The script uses wget and gsutil to download the different data files from the original sources in the NCBoost_features/ folder.
 It may be run using the following command line from the root NCBoost folder:
