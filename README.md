@@ -23,7 +23,7 @@ The file contains the following columns:
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost software
-The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or applying NCBoost trained models on 
+The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
 The NCBoost software is also provided in this repository in case you are interested in assessing the NCBoost scores for genomic positions other than those included in the precomputed file. The following sections will guide you through the steps needed for the variant annotation and feature extraction as well as the execution of the gradient tree boosting model implemented in NCBoost to obtain the pathogenicity score.
 
 
