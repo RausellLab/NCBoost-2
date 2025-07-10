@@ -22,9 +22,12 @@ The file contains the following columns:
 *NCBoost_Score*, NCBoost v2 score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
+## NCBoost gene database
+The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here]().
+
 ## NCBoost software
 The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
-The NCBoost software is also provided in this repository in case you are interested in assessing the NCBoost scores for genomic positions other than those included in the precomputed file. The following sections will guide you through the steps needed for the variant annotation and feature extraction as well as the execution of the gradient tree boosting model implemented in NCBoost to obtain the pathogenicity score.
+The following sections will guide you through the steps needed for the annotation of variants, training and execution of NCBoost-2 pretrained models to obtain the pathogenicity score.
 
 
 ## Downloads, installation and processing of input files
@@ -45,7 +48,7 @@ Python3 libraries can be installed using:
 
 #### A - Download of feature files
 
-NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided.
+NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go)
 Once downloaded, 
 The gene-level features used by NCBoost are provided as part of this repository and described [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data).  
 
