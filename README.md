@@ -53,13 +53,8 @@ NCBoost 2 features are available [here](). Compressed tabix-indexed files are pr
 wget ...
 ```
 Once downloaded, 
-The gene-level features used by NCBoost are provided as part of this repository and described [here](NCBoost_data).  
 
-The script uses wget and gsutil to download the different data files from the original sources in the NCBoost_features/ folder.
-It may be run using the following command line from the root NCBoost folder:
-
-The total size of the feature data files is about 450Go, so it might be long...
-Complete details about the associated source feature files are provided [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_features).
+Complete details about each features are available at [NCBoost v2 paper]().
 
 #### B - Indexing of feature files
 
