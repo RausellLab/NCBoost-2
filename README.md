@@ -27,6 +27,7 @@ The NCBoost gene database, integrating several database identifiers (Ensembl, HG
 
 ## NCBoost software
 The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
+
 The following sections will guide you through the steps needed for the annotation of variants, training and execution of NCBoost-2 pretrained models to obtain the pathogenicity score.
 
 
@@ -44,27 +45,15 @@ The required python libraries are detailed in [libraries.txt](https://github.com
 Python3 libraries can be installed using:  
 `pip install -r libraries.txt`
 
-### 2. Download and processing of the feature file
-
-#### A - Download of feature files
+### 2. Download the feature file
 
 NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
 wget ...
 ```
-Once downloaded, 
+Move the downloaded data to data/WG_annotated/
 
 Complete details about each features are available at [NCBoost v2 paper]().
-
-#### B - Indexing of feature files
-
-To make the variant annotation more efficient, most of the feature mapping steps are done using tabix or pytabix. Some feature files need to be indexed at this step. 
-To index the files using [tabix](http://www.htslib.org/doc/tabix.html), you may run the script `prepare_feature_databases.sh` from the main NCBoost folder.
-```
-./NCBoost_scripts/prepare_feature_databases.sh
-```
-The script will index the bed and vcf files containing CDTS scores [[2]](https://github.com/RausellLab/NCBoost#references), mean Het and mean DAF [[3]](https://github.com/RausellLab/NCBoost#references) and the features provided by the 1000 Genome Selection Browser [[4]](https://github.com/RausellLab/NCBoost#references). See [NCBoost paper](https://rdcu.be/bmlxX) Table 1 and Methods section for further details.
-
 
 ## Variant input format
 Variants have to be reported in 1-based, GrCh37 genomic coordinates. The variant file required is a tab-delimited textfile with column headers following the format:
