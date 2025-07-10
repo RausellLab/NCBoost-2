@@ -1,4 +1,5 @@
-# NCBoost v2.0.0 []()  
+# NCBoost v2
+[]()  
 
 NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost paper]().
 
@@ -6,7 +7,7 @@ Of note, the NCBoost software can score any type of genomic position, provided t
 
 ## Precomputed NCBoost scores in proximal cis-regulatory regions of protein-coding genes
 
-We precomputed the NCBoost score for XXXXXX non-coding genomic positions overlapping intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/NCBoost_data/NCBoost_geneDB.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost v2 paper]().
+We precomputed the NCBoost score for XXXXXX non-coding genomic positions overlapping intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/data/geneDB_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost v2 paper]().
 
 The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded [here]() as a tabix indexed file (gz):
 https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v2025XXXX.tsv.gz
@@ -15,14 +16,14 @@ https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v2025XXXX.tsv.gz.t
 
 The file contains the following columns:  
 *chr*, chromosome name, as [1:22,X,Y]  
-*pos*, 1-based genomic position (GrCh38.p13 genome assembly)  
+*pos*, 1-based genomic position (GrCh38 genome assembly)  
 *region*, type of non-coding region overlapping the position, as provided by ANNOVAR (see above)  
 *closest_gene_name*, name of the associated protein-coding gene  
 *NCBoost_Score*, NCBoost v2 score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost software
-
+The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or applying NCBoost trained models on 
 The NCBoost software is also provided in this repository in case you are interested in assessing the NCBoost scores for genomic positions other than those included in the precomputed file. The following sections will guide you through the steps needed for the variant annotation and feature extraction as well as the execution of the gradient tree boosting model implemented in NCBoost to obtain the pathogenicity score.
 
 
@@ -44,9 +45,9 @@ Python3 libraries can be installed using:
 
 #### A - Download of feature files
 
-NCBoost 2 features are available [here]().
+NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided.
+Once downloaded, 
 The gene-level features used by NCBoost are provided as part of this repository and described [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data).  
-All the rest of feature files (position-level and window-level features) need to be downloaded executing the script `get_selection_features.sh`.
 
 The script uses wget and gsutil to download the different data files from the original sources in the NCBoost_features/ folder.
 It may be run using the following command line from the root NCBoost folder:
