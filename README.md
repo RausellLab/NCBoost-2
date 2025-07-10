@@ -33,7 +33,7 @@ The following sections will guide you through the steps needed for the annotatio
 
 ## Downloads, installation and processing of input files
 
-### 1. Software and database downloads
+### 1. Download NCBoost v2 software
 
 NCBoost scripts and associated data may be cloned from the NCBoost github repository:
 ```
@@ -52,19 +52,22 @@ NCBoost 2 features are available [here](). Compressed tabix-indexed files are pr
 wget ...
 ```
 Move the downloaded data to data/WG_annotated/
+```
+mkdir data/WG_annotated
+mv xxx data/WG_annotated/
+```
 
 Complete details about each features are available at [NCBoost v2 paper]().
 
 ## Variant input format
-Variants have to be reported in 1-based, GrCh37 genomic coordinates. The variant file required is a tab-delimited textfile with column headers following the format:
+Variants have to be reported in 1-based, GrCh38 genomic coordinates. The variant file required is a tab-delimited textfile with column headers following the format:
 ```
-chr start   end   ref  alt
-1   12589   12589   G   A
+chr start   ref  alt
+1   12589   G   A
 ```
 
 The *chr* column should not contain the 'chr' prefix.
-For Single Nucleotide Variants (SNV), *start* and *end* should be equal (ANNOVAR's requirement), both corresponding to the position of the SNV.
-Other columns can be added in addition to such first five columns. However, extra colums may slow down the annotation pipeline.
+Other columns can be added in addition to such first four columns.
 
 ## Feature annotation and scoring of variants
 The whole annotation process and the final scoring by NCBoost can be performed using the script `ncboost_annotate.sh`, with two arguments: (i) the path to the variants input file; and (ii) the path to the output file.
