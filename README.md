@@ -48,7 +48,10 @@ Python3 libraries can be installed using:
 
 #### A - Download of feature files
 
-NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go)
+NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
+```
+wget ...
+```
 Once downloaded, 
 The gene-level features used by NCBoost are provided as part of this repository and described [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data).  
 
