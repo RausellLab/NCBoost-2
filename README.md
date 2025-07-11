@@ -69,8 +69,9 @@ chr start   ref  alt
 The *chr* column should not contain the 'chr' prefix.
 Other columns can be added in addition to such first four columns.
 
-## Feature annotation and scoring of variants
-The whole annotation process and the final scoring by NCBoost can be performed using the script `ncboost_annotate.sh`, with two arguments: (i) the path to the variants input file; and (ii) the path to the output file.
+## NCBoost training
+NCBoost framework can be trained using the 
+The whole annotation, training, testing and scoring process and the final scoring by NCBoost can be performed using the script `ncboost_annotate.sh`, with two arguments: (i) the path to the variants input file; and (ii) the path to the output file.
 
 ```
 ./NCBoost_scripts/ncboost_annotate.sh /folder1/subfolderB/inF.vcf /folder1/subfolderB/outF.tsv
