@@ -70,12 +70,11 @@ The *chr* column should not contain the 'chr' prefix.
 Other columns can be added in addition to such first four columns.
 
 ## NCBoost training
-NCBoost framework can be trained using the 
-The whole annotation, training, testing and scoring process and the final scoring by NCBoost can be performed using the script `ncboost_annotate.sh`, with two arguments: (i) the path to the variants input file; and (ii) the path to the output file.
+NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
+The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features.
 
-```
-./NCBoost_scripts/ncboost_annotate.sh /folder1/subfolderB/inF.vcf /folder1/subfolderB/outF.tsv
-```
+## NCBoost scoring
+NCBoost framework can be applied to score any variant using the ncboost_score.ipynb script. It will apply the trained framework used to generate the resutls in [NCBoost v2 paper].
 The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the nearest gene to which the variant was associated and the corresponding non-coding region (as determined through ANNOVAR, see above), the gene type and 8 gene-based features (pLI, familyMemberCount, ncRVIS, ncGERP, RVIS_percentile, dnds, GDI and gene_age), using a reference of [18404 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/NCBoost_data/NCBoost_geneDB.tsv), 6 one-hot encoded non-coding region types, 11 features extracted from CADD annotation files [[5]](https://github.com/RausellLab/NCBoost#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, bStatistic), 9 positive-selection scores (TajimasD_YRI/CEU/CHB_pvalue, FuLisD_YRI/CEU/CHB_pvalue, FuLisF_YRI/CEU/CHB_pvalue), the mean DAF and mean Het, the 9 MAF from the 1000GP or GnomAD [[6]](https://github.com/RausellLab/NCBoost#references) (meanMAF1000G, meanMAFGnomAD, meanMAF_AFR/AMR/ASJ/EAS/FIN/NFE/OTHGnomAD), the CDTS score, the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
 More information about the gene-based features [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data#file-ncboost_genedbtsv), about the other conservation features [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_features#feature-details), or in [NCBoost paper](https://rdcu.be/bmlxX).  
