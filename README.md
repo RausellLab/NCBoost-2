@@ -71,18 +71,18 @@ Other columns can be added in addition to such first four columns.
 
 ## NCBoost training
 NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
+
 The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features.
 
 ## NCBoost scoring
 NCBoost framework can be applied to score any variant using the ncboost_score.ipynb script. It will apply the trained framework used to generate the resutls in [NCBoost v2 paper].
+
 The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
 ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[5]](https://github.com/RausellLab/NCBoost#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), 9 positive-selection scores (TajimasD_YRI/CEU/CHB_pvalue, FuLisD_YRI/CEU/CHB_pvalue, FuLisF_YRI/CEU/CHB_pvalue), the mean DAF and mean Het, the 9 MAF from the 1000GP or GnomAD [[6]](https://github.com/RausellLab/NCBoost#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the SpliceAI score and the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
+
 More information about the can be found in [NCBoost 2 paper]().  
 
-
-## Example
-An example on how to run NCBoost software is available [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_example).
 
 ## References
 1: Wang and Hakonarson; (2010). ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res. 38, e164-e164.
@@ -101,9 +101,9 @@ An example on how to run NCBoost software is available [here](https://github.com
 Please address comments and questions about NCBoost to barthelemy.caron@institutimagine.org and antonio.rausell@inserm.fr
 
 ## License
-NCBoost scripts, framework and databases are available under the [Apache License 2.0](https://github.com/RausellLab/NCBoost/tree/master/LICENSE).
+NCBoost 2 scripts, framework and databases are available under the [Apache License 2.0](https://github.com/RausellLab/NCBoost-2/tree/master/LICENSE).
 
-Copyright 2018 Clinical BioInformatics Laboratory - Institut Imagine
+Copyright 2025 Clinical BioInformatics Laboratory - Institut Imagine
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
