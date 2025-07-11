@@ -75,9 +75,18 @@ The annotation requires to download the full set of features used by NCBoost (XX
 
 ## NCBoost scoring
 NCBoost framework can be applied to score any variant using the ncboost_score.ipynb script. It will apply the trained framework used to generate the resutls in [NCBoost v2 paper].
-The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the nearest gene to which the variant was associated and the corresponding non-coding region (as determined through ANNOVAR, see above), the gene type and 8 gene-based features (pLI, familyMemberCount, ncRVIS, ncGERP, RVIS_percentile, dnds, GDI and gene_age), using a reference of [18404 protein-coding genes](https://github.com/RausellLab/NCBoost/blob/master/NCBoost_data/NCBoost_geneDB.tsv), 6 one-hot encoded non-coding region types, 11 features extracted from CADD annotation files [[5]](https://github.com/RausellLab/NCBoost#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, bStatistic), 9 positive-selection scores (TajimasD_YRI/CEU/CHB_pvalue, FuLisD_YRI/CEU/CHB_pvalue, FuLisF_YRI/CEU/CHB_pvalue), the mean DAF and mean Het, the 9 MAF from the 1000GP or GnomAD [[6]](https://github.com/RausellLab/NCBoost#references) (meanMAF1000G, meanMAFGnomAD, meanMAF_AFR/AMR/ASJ/EAS/FIN/NFE/OTHGnomAD), the CDTS score, the NCBoost score and the extra columns provided by the user in the input file.  
+The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
+ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost2/blob/master/data/geneDB.tsv), 6 one-hot encoded non-coding region types, 11 features extracted from CADD annotation files [[5]](https://github.com/RausellLab/NCBoost#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, bStatistic), 9 positive-selection scores (TajimasD_YRI/CEU/CHB_pvalue, FuLisD_YRI/CEU/CHB_pvalue, FuLisF_YRI/CEU/CHB_pvalue), the mean DAF and mean Het, the 9 MAF from the 1000GP or GnomAD [[6]](https://github.com/RausellLab/NCBoost#references) (meanMAF1000G, meanMAFGnomAD, meanMAF_AFR/AMR/ASJ/EAS/FIN/NFE/OTHGnomAD), the CDTS score, the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
 More information about the gene-based features [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_data#file-ncboost_genedbtsv), about the other conservation features [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_features#feature-details), or in [NCBoost paper](https://rdcu.be/bmlxX).  
+
+    A = ['GerpN', 'priPhCons', 'mamPhCons', 'verPhCons', 'priPhyloP', 'mamPhyloP', 'verPhyloP', 'GerpRS', 'GerpRSpval',
+      'GerpS', 'ZooPriPhyloP', 'ZooVerPhyloP', 'ZooRoCC', 'ZooUCE', 'Roulette-AR']
+    B = ['bStatistic',  'CDTS', 'mean_MAF', 'mean_MAF_afr', 'mean_MAF_ami', 'mean_MAF_amr', 'mean_MAF_asj', 'mean_MAF_eas',
+    'mean_MAF_fin', 'mean_MAF_mid', 'mean_MAF_nfe', 'mean_MAF_sas']
+    C = []
+    D = ['GC', 'CpG', 'SpliceAI']
+
 
 ## Example
 An example on how to run NCBoost software is available [here](https://github.com/RausellLab/NCBoost/tree/master/NCBoost_example).
