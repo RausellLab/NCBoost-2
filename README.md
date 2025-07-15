@@ -10,7 +10,17 @@ Of note, the NCBoost software can score any type of genomic position, provided t
 We precomputed the NCBoost score for 335,596,014 non-coding genomic positions overlapping intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost v2 paper]().
 
 The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded [here](https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz) as a tabix indexed file (gz),
-and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi) (gz.tbi).
+and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
+```
+gsutil cp gs://ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz
+gsutil cp gs://ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi
+```
+or
+```
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi
+
+```
 
 The file contains the following columns:  
 *chr*, chromosome name, as [1:22,X,Y]  
@@ -45,9 +55,8 @@ Python3 libraries can be installed using:
 
 ### 2. Download the feature file
 
-NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
+NCBoost 2 features are available [here](), for more than . Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
-gsutil cp gs://ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz 
 ```
 Move the downloaded data to data/WG_annotated/
 ```
