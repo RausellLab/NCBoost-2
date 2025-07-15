@@ -30,7 +30,7 @@ The file contains the following columns:
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost v2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
 ## NCBoost gene database
-The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data/geneDB_ncboost2.tsv).
+The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv).
 
 ## NCBoost software
 The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
@@ -83,7 +83,7 @@ Other columns can be added in addition to such first four columns.
 ## NCBoost training
 NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
 
-The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features.
+The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
 
 ## NCBoost scoring
 NCBoost framework can be applied to score any variant using the ncboost_score.ipynb script. It will apply the trained framework used to generate the resutls in [NCBoost v2 paper].
@@ -100,11 +100,9 @@ More information about the can be found in [NCBoost 2 paper]().
 
 2: di Iulio et al. (2018). The human noncoding genome defined by genetic diversity. Nat. Genet. 50, 333-337.
 
-3: Ritchie et al. (2014). Functional annotation of noncoding sequence variants. Nat. Methods 11, 294-296.
+3: Schubach et al. (2024). CADD v1.7: using protein language models, regulatory CNNs and other nucleotide-level scores to improve genome-wide variant predictions. NAR.
 
 4: Pybus et al. (2014). 1000 Genomes Selection Browser 1.0: a genome browser dedicated to signatures of natural selection in modern humans. Nucleic Acids Res. 42, D903-D909.
-
-5: Kircher et al. (2014). A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. 46, 310-315.
 
 6: Lek et al. (2016). Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285-291.
 
