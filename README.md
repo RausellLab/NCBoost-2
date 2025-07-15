@@ -47,7 +47,7 @@ Python3 libraries can be installed using:
 
 NCBoost 2 features are available [here](). Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
-wget ...
+gsutil cp gs://ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz 
 ```
 Move the downloaded data to data/WG_annotated/
 ```
@@ -96,7 +96,7 @@ More information about the can be found in [NCBoost 2 paper]().
 6: Lek et al. (2016). Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285-291.
 
 ## Contact
-Please address comments and questions about NCBoost to barthelemy.caron@institutimagine.org and antonio.rausell@inserm.fr
+Please address comments and questions about NCBoost to barthelemy.caron@institutimagine.org and antonio.rausell@institutimagine.org
 
 ## License
 NCBoost 2 scripts, framework and databases are available under the [Apache License 2.0](https://github.com/RausellLab/NCBoost-2/tree/master/LICENSE).
