@@ -19,7 +19,6 @@ or
 ```
 wget https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz
 wget https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi
-
 ```
 
 The file contains the following columns:  
@@ -57,6 +56,11 @@ Python3 libraries can be installed using:
 
 NCBoost 2 features are available [here](), for more than . Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
+gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz
+```
+or
+```
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.gz
 ```
 Move the downloaded data to data/WG_annotated/
 ```
