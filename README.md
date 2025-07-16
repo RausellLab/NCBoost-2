@@ -47,10 +47,14 @@ NCBoost scripts and associated data may be cloned from the NCBoost github reposi
 git clone https://github.com/RausellLab/NCBoost-2.git
 cd NCBoost-2
 ```
-The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.txt).
 
-Python3 libraries can be installed using:  
-`pip install -r libraries.txt`
+### 3. Install ncboost2 environment
+The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
+```
+conda create --name ncboost2 python=3.10.14
+conda activate ncboost2
+bash libraries.sh
+```
 
 ### 2. Download the feature file
 
