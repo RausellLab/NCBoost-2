@@ -98,7 +98,7 @@ NCBoost framework can be applied to score any variant using the jupyter ncboost_
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
-python ncboost_score.py data/testing/testing_data.tsv
+python ncboost_score.py path/to/file.tsv
 ```
 
 The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
