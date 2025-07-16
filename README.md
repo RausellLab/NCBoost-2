@@ -48,17 +48,21 @@ git clone https://github.com/RausellLab/NCBoost-2.git
 cd NCBoost-2
 ```
 
-### 3. Install ncboost2 environment
+### 2. Install ncboost2 environment
 The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
 ```
 conda create --name ncboost2 python=3.10.14
 conda activate ncboost2
 bash libraries.sh
+conda activate ncboost2
 ```
 
-### 2. Download the feature file
+### 3. Download the feature file
 
-NCBoost 2 features are available [here](), for 1,879,856,949 positions. Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
+NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz), as a tabix indexed file (.gz, XXGo),
+and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
+
+Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
 gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz
 ```
