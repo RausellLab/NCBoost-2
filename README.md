@@ -59,7 +59,7 @@ conda activate ncboost2
 
 ### 3. Download the feature file
 
-NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz), as a tabix indexed file (.gz, XXGo),
+NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz), as a tabix indexed file (.gz, 123 Go),
 and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
 
 Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
@@ -100,29 +100,29 @@ NCBoost framework can be applied to score any variant using the jupyter ncboost_
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
-python ncboost_score.py path/to/file.tsv
+python ncboost_score.py path/to/input/file.tsv path/to/output/file.tsv
 ```
 
 The output file is a tab-delimited text file displaying by columns the following fields (in this order): The chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
-ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[5]](https://github.com/RausellLab/NCBoost#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), 9 positive-selection scores (TajimasD_YRI/CEU/CHB_pvalue, FuLisD_YRI/CEU/CHB_pvalue, FuLisF_YRI/CEU/CHB_pvalue), the mean DAF and mean Het, the 9 MAF from the 1000GP or GnomAD [[6]](https://github.com/RausellLab/NCBoost#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the SpliceAI score and the NCBoost score and the extra columns provided by the user in the input file.  
+ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[2]](https://github.com/RausellLab/NCBoost-2#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), the 9 MAF from GnomAD [[3]](https://github.com/RausellLab/NCBoost-2#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the SpliceAI score [[4]](https://github.com/RausellLab/NCBoost-2#references) and the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
 
 More information about the can be found in [NCBoost 2 paper]().
 
 
 ## References
-1: Wang and Hakonarson; (2010). ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res. 38, e164-e164.
+1: Wang and Hakonarson; (2010). ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res.
 
-2: di Iulio et al. (2018). The human noncoding genome defined by genetic diversity. Nat. Genet. 50, 333-337.
+2: Schubach et al. (2024). CADD v1.7: using protein language models, regulatory CNNs and other nucleotide-level scores to improve genome-wide variant predictions. Nucleic Acids Res.
 
-3: Schubach et al. (2024). CADD v1.7: using protein language models, regulatory CNNs and other nucleotide-level scores to improve genome-wide variant predictions. NAR.
+3: Chen et al. (2024). A genomic mutational constraint map using variation in 76,156 human genomes. Nature.
 
-4: Pybus et al. (2014). 1000 Genomes Selection Browser 1.0: a genome browser dedicated to signatures of natural selection in modern humans. Nucleic Acids Res. 42, D903-D909.
+4: Jaganathan, et al. (2019). Predicting Splicing from Primary Sequence with Deep Learning. Cell.
 
-6: Lek et al. (2016). Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285-291.
 
 ## Contact
 Please address comments and questions about NCBoost to barthelemy.caron@institutimagine.org and antonio.rausell@institutimagine.org
+
 
 ## License
 NCBoost 2 scripts, framework and databases are available under the [Apache License 2.0](https://github.com/RausellLab/NCBoost-2/tree/master/LICENSE).
