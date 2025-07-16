@@ -65,10 +65,12 @@ and the corresponding index file is available [here](https://storage.googleapis.
 Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
 ```
 gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz
+gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz.tbi
 ```
 or
 ```
 wget https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.gz
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.gz.tbi
 ```
 Move the downloaded data to data/WG_annotated/
 ```
