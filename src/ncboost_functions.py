@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 49ae0bb6e2d2c7a89159fc1bc1c8d196fbad40ad
 import polars as pl
 import xgboost as xgb
 import numpy as np
 import pandas as pd
-<<<<<<< HEAD
 import subprocess
 import tabix
 from functools import partial
@@ -92,25 +87,6 @@ def ncboost_train(data, features, save_path):
     for l_partition in range(1,11):
         print(f'Training model {l_partition}')
         l_training_set, l_testing_set = ncboost_split_train_test(data, l_partition)
-=======
-
-def ncboost_train(data, features, save_path):
-    
-    df_schema = {l_feature : float for l_feature in features}
-    df_schema['partition'] = int
-    feature_importance_df = pl.DataFrame(schema = df_schema)
-
-    model_dict = {}
-
-    annotated_data = pl.DataFrame()
-    
-    xgb.config_context(verbosity = 1)
-
-    for l_partition in range(1,11):
-        print(f'Training model {l_partition}')
-        l_training_set = data.filter(pl.col('partition') != l_partition)
-        l_testing_set = data.filter(pl.col('partition') == l_partition)
->>>>>>> 49ae0bb6e2d2c7a89159fc1bc1c8d196fbad40ad
         xgb_params = {
             'max_depth' : 25, 
             'learning_rate' : 0.01, 
@@ -135,7 +111,6 @@ def ncboost_train(data, features, save_path):
         dtest = xgb.DMatrix(l_test_features, label = l_test_labels, feature_names = features)
         watchlist = [(dtest, "eval"), (dtrain, "train")]
         evals_result = {}
-<<<<<<< HEAD
         model = xgb.train(
             xgb_params, 
             dtrain, 
@@ -144,24 +119,11 @@ def ncboost_train(data, features, save_path):
             evals_result=evals_result, 
             evals = watchlist
         )
-=======
-        model = xgb.train(xgb_params, dtrain, num_boost_round = 3000, verbose_eval = False, evals_result=evals_result, evals = watchlist)
-
->>>>>>> 49ae0bb6e2d2c7a89159fc1bc1c8d196fbad40ad
         y_pred = model.predict(dtest)
         l_testing_set = l_testing_set.with_columns(pl.lit(y_pred).alias('NCBoost'))
         annotated_data = pl.concat([annotated_data, l_testing_set])
 
-<<<<<<< HEAD
         l_feature_importance_df = get_model_feature_importance(model, l_partition)
-=======
-        feature_importance_dict = model.get_score(fmap = '', importance_type = 'total_gain')
-        total = sum(feature_importance_dict.values(), 0.0)
-        feature_importance_dict = {k: np.round(v / total, 5) for k, v in feature_importance_dict.items()}
-        l_feature_importance_df = pl.DataFrame(feature_importance_dict)
-        l_feature_importance_df = l_feature_importance_df / l_feature_importance_df[:,:-1].sum_horizontal()
-        l_feature_importance_df = l_feature_importance_df.with_columns(pl.lit(l_partition).cast(pl.Int64).alias('partition'))
->>>>>>> 49ae0bb6e2d2c7a89159fc1bc1c8d196fbad40ad
         feature_importance_df = pl.concat([feature_importance_df, l_feature_importance_df], how = 'diagonal')
 
         # Saving models
@@ -189,7 +151,6 @@ def ncboost_train(data, features, save_path):
         
     return(model_dict, t_feature_importance_df, annotated_data)
 
-<<<<<<< HEAD
 def plot_feature_importance(feature_importance_df, save_path):
     feature_names = feature_importance_df['features'].to_list()
     feature_importance_df = feature_importance_df.unpivot(index = 'features')
@@ -284,5 +245,3 @@ def apply_model(data_model_tuple):
     y_pred = model.predict(np.asarray(data[model.feature_names_in_]))
     data = data.with_columns(pl.lit(y_pred).cast(float).alias('NCBoost'))
     return(data)
-=======
->>>>>>> 49ae0bb6e2d2c7a89159fc1bc1c8d196fbad40ad
