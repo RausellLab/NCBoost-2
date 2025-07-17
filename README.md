@@ -1,7 +1,7 @@
 # NCBoost 2
 []()  
 
-NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost paper]().
+NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper]().
 
 Of note, the NCBoost software can score any type of genomic position, provided that the required puryfing selection features used by the model are available. However, it is important to realize that, among the set of high-confidence pathogenic non-coding variants that were used to train NCBoost, more than 98%  were found at proximal cis-regulatory regions, with only 27 variants overlapping more distal intergenic regions. Thus, for consistency with the training process, the most reliable genomic contexts for the use of the NCBoost score are the proximal cis-regulatory regions of protein-coding genes.
 
@@ -38,9 +38,9 @@ The NCBoost software is also provided in this repository in case you are interes
 The following sections will guide you through the steps needed for the annotation of variants, training and execution of NCBoost-2 pretrained models to obtain the pathogenicity score.
 
 
-## Downloads, installation and processing of input files
+### Downloads, installation and processing of input files
 
-### 1. Download NCBoost 2 software
+#### 1. Download NCBoost 2 software
 
 NCBoost scripts and associated data may be cloned from the NCBoost github repository:
 ```
@@ -48,7 +48,7 @@ git clone https://github.com/RausellLab/NCBoost-2.git
 cd NCBoost-2
 ```
 
-### 2. Install ncboost2 environment
+#### 2. Install ncboost2 environment
 The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
 ```
 conda create --name ncboost2 python=3.10.14
@@ -56,7 +56,7 @@ conda activate ncboost2
 bash libraries.sh
 ```
 
-### 3. Download the feature file
+#### 3. Download the feature file
 
 NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz) (total size = 132 Go) as per-chromosome compressed tabix-indexed files.
 ```
@@ -66,15 +66,15 @@ or
 ```
 wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
 ```
-Move the downloaded data to data/WG_annotated/
+Unpack the tar file and move the data to the data/ fodler:
 ```
-mkdir data/WG_annotated
-mv xxx data/WG_annotated/
+tar -zxvf WG_annotated.tar.gz
+mv -r WG_annotated data/
 ```
 
 Complete details about each features are available at [NCBoost 2 paper]().
 
-## Variant input format
+#### 4. Variant input format
 Variants have to be reported in 1-based, GrCh38 genomic coordinates. The required variant file is a tab-delimited textfile with column headers following the format:
 ```
 chr start   ref  alt
@@ -84,13 +84,14 @@ chr start   ref  alt
 The *chr* column should not contain the 'chr' prefix.
 Any other columns can be added in addition to the required four columns.
 
-## NCBoost training
+#### 5. NCBoost training
 NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
 
-The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
+The annotation requires to download the full set of features used by NCBoost (132 Go). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
 
-## NCBoost scoring
-NCBoost framework can be applied to score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. It will apply the trained framework used to generate the resutls in [NCBoost 2 paper](https://).
+#### 6. NCBoost scoring
+NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. It will apply the trained framework used to generate the resutls in [NCBoost 2 paper](https://).
+The annotation requires to download the full set of features used by NCBoost (132 Go).
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
