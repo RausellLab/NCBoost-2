@@ -54,23 +54,17 @@ The required python libraries are detailed in [libraries.txt](https://github.com
 conda create --name ncboost2 python=3.10.14
 conda activate ncboost2
 bash libraries.sh
-conda activate ncboost2
 ```
 
 ### 3. Download the feature file
 
-NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz), as a tabix indexed file (.gz, 123 Go),
-and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
-
-Compressed tabix-indexed files are provided for each chromosomes (total size = XXX Go), and can be downloaded using the following command:
+NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz) (total size = 132 Go) as per-chromosome compressed tabix-indexed files.
 ```
-gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz
-gsutil cp gs://ncboost-cbl/ncboost_features_hg38_v20250711.gz.tbi
+gsutil cp gs://ncboost-cbl/WG_annotated.tar.gz
 ```
 or
 ```
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.gz
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_features_hg38_v20250711.gz.tbi
+wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
 ```
 Move the downloaded data to data/WG_annotated/
 ```
@@ -96,7 +90,7 @@ NCBoost framework can be trained using the ncboost_train.ipynb script. It loads 
 The annotation requires to download the full set of features used by NCBoost (XXXGo). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
 
 ## NCBoost scoring
-NCBoost framework can be applied to score any variant using the jupyter ncboost_score.ipynb or its python version equivalent, ncboost_score.py scripts. It will apply the trained framework used to generate the resutls in [NCBoost 2 paper].
+NCBoost framework can be applied to score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. It will apply the trained framework used to generate the resutls in [NCBoost 2 paper](https://).
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
