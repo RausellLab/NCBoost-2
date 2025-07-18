@@ -14,8 +14,8 @@ from multiprocessing.pool import ThreadPool as Pool
 
 def get_feature_list():
     A = ['GerpN', 'priPhCons', 'mamPhCons', 'verPhCons', 'priPhyloP', 'mamPhyloP', 'verPhyloP', 'GerpRS', 'GerpRSpval',
-      'GerpS', 'ZooPriPhyloP', 'ZooVerPhyloP', 'ZooRoCC', 'ZooUCE', 'Roulette-AR']
-    B = ['bStatistic',  'CDTS', 'mean_MAF', 'mean_MAF_afr', 'mean_MAF_ami', 'mean_MAF_amr', 'mean_MAF_asj', 'mean_MAF_eas',
+      'GerpS', 'ZooPriPhyloP', 'ZooVerPhyloP', 'ZooRoCC', 'ZooUCE']
+    B = ['bStatistic', 'Roulette-AR',  'CDTS', 'mean_MAF', 'mean_MAF_afr', 'mean_MAF_ami', 'mean_MAF_amr', 'mean_MAF_asj', 'mean_MAF_eas',
     'mean_MAF_fin', 'mean_MAF_mid', 'mean_MAF_nfe', 'mean_MAF_sas']
     C = ['slr_dnds', 'gene_age', 'pLI', 'zscore_mis', 'zscore_syn', 'loeuf', 'GDI', 'ncRVIS',
     'ncGERP', 'RVIS_percentile', 'pcGERP']
