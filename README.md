@@ -90,8 +90,9 @@ NCBoost framework can be trained using the ncboost_train.ipynb script. It loads 
 The annotation requires to download the full set of features used by NCBoost (132 Go). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
 
 #### 6. NCBoost scoring
-NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. It will apply the trained framework used to generate the resutls in [NCBoost 2 paper](https://).
-The annotation requires to download the full set of features used by NCBoost (132 Go).
+NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. 
+It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://).
+The annotation requires to download the full set of features used by NCBoost (132 Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
