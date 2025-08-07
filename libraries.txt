@@ -1,0 +1,2 @@
+conda install matplotlib-base=3.8.4=py310h1128e8f_0 matplotlib-inline=0.1.6=py310h06a4308_0 pandas=2.2.1=py310h6a678d5_0 numpy=1.26.4=py310h5f9d8c6_0 numpy-base=1.26.4=py310hb5e798b_0 seaborn=0.13.2=py310h06a4308_2 tqdm=4.65.0=py310h2f386ee_0
+pip install scipy==1.11.4 polars-u64-idx==1.1.0  multiprocess==0.70.16 scikit-learn==1.5.2 xgboost==2.1.3 shap==0.46.0 pytabix jupyterlab-widgets==3.0.13 ipywidgets==8.1.5
