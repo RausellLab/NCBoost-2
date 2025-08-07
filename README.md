@@ -49,7 +49,7 @@ cd NCBoost-2
 ```
 
 #### 2. Install ncboost2 environment
-The required python libraries are detailed in [libraries.txt](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
+The required python libraries are detailed in [libraries.sh](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
 ```
 conda create --name ncboost2 python=3.10.14
 conda activate ncboost2
