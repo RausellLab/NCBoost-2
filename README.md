@@ -1,5 +1,6 @@
 # NCBoost 2
-[]()  
+
+[![DOI](https://zenodo.org/badge/16760945.svg)](https://doi.org/10.5281/zenodo.16760945)
 
 NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper]().
 
