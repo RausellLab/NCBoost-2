@@ -2,13 +2,13 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16760945.svg)](https://doi.org/10.5281/zenodo.16760945)
 
-NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper]().
+NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 Of note, the NCBoost software can score any type of genomic position, provided that the required puryfing selection features used by the model are available. However, it is important to realize that, among the set of high-confidence pathogenic non-coding variants that were used to train NCBoost, more than 98%  were found at proximal cis-regulatory regions, with only 27 variants overlapping more distal intergenic regions. Thus, for consistency with the training process, the most reliable genomic contexts for the use of the NCBoost score are the proximal cis-regulatory regions of protein-coding genes.
 
 ## Precomputed NCBoost scores in proximal cis-regulatory regions of protein-coding genes
 
-We precomputed the NCBoost score for 1.88 billion positions non-coding genomic positions overlapping intergenic, intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost 2 paper]().
+We precomputed the NCBoost score for 1.88 billion positions non-coding genomic positions overlapping intergenic, intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded [here](https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz) as a tabix indexed file (.gz, 33Go),
 and the corresponding index file is available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_score_hg38_v20250711.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
@@ -73,7 +73,7 @@ tar -zxvf WG_annotated.tar.gz
 mv -r WG_annotated data/
 ```
 
-Complete details about each features are available at [NCBoost 2 paper]().
+Complete details about each features are available at [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 #### 4. Variant input format
 Variants have to be reported in 1-based, GrCh38 genomic coordinates. The required variant file is a tab-delimited textfile with column headers following the format:
@@ -92,7 +92,7 @@ The annotation requires to download the full set of features used by NCBoost (13
 
 #### 6. NCBoost scoring
 NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. 
-It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://).
+It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 The annotation requires to download the full set of features used by NCBoost (132 Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
@@ -105,7 +105,7 @@ the chromosome, position, reference and alternative allele of the variant, the n
 ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[2]](https://github.com/RausellLab/NCBoost-2#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), the 9 MAF from GnomAD [[3]](https://github.com/RausellLab/NCBoost-2#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the SpliceAI score [[4]](https://github.com/RausellLab/NCBoost-2#references) and the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
 
-More information about the can be found in [NCBoost 2 paper]().
+More information about the can be found in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 
 ## References
