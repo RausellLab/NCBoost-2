@@ -42,6 +42,12 @@ The following sections will guide you through the steps needed for the annotatio
 ### Downloads, installation and processing of input files
 
 #### 1. Download NCBoost 2 software
+NCBoost models are stored as github large file object, and require the installation of github-lfs.
+On Linux, github-lfs can be easily installed using:
+```
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+```
+
 
 NCBoost scripts and associated data may be cloned from the NCBoost github repository:
 ```
