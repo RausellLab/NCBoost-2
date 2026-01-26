@@ -69,6 +69,12 @@ conda activate ncboost2
 bash libraries.sh
 ```
 
+Alternatively, a .yml file containing all conda & pip libraries is also available and can be installed as follows:
+```
+conda env create --name ncboost2 --file=ncboost2.yml
+```
+
+
 #### 3. Download the feature file
 
 NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz) (total size = 132 Go) as per-chromosome compressed tabix-indexed files.
@@ -90,7 +96,7 @@ Complete details about each features are available at [NCBoost 2 paper](https://
 #### 4. Variant input format
 Variants have to be reported in 1-based, GrCh38 genomic coordinates. The required variant file is a tab-delimited textfile with column headers following the format:
 ```
-chr start   ref  alt
+chr pos   ref  alt
 1   12589   G   A
 ```
 
@@ -102,10 +108,22 @@ NCBoost framework can be trained using the ncboost_train.ipynb script. It loads 
 
 The annotation requires to download the full set of features used by NCBoost (132 Go). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
 
+Don't forget to first select the ncboost2 environment before running the script in jupyter:
+```
+conda activate ncboost2
+
+```
+
 #### 6. NCBoost scoring
 NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. 
 It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 The annotation requires to download the full set of features used by NCBoost (132 Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
+
+Don't forget to first activate the environment:
+```
+conda activate ncboost2
+
+```
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
