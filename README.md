@@ -55,6 +55,12 @@ git clone https://github.com/RausellLab/NCBoost-2.git
 cd NCBoost-2
 ```
 
+Check that the models were downloaded properly by running:
+```
+git lfs ls-files
+```
+which should output the 10 toy models and 10 ncboost models.
+
 #### 2. Install ncboost2 environment
 The required python libraries are detailed in [libraries.sh](https://github.com/RausellLab/NCBoost-2/blob/master/libraries.sh) and can be installed using conda & pip as follows:
 ```
