@@ -30,34 +30,49 @@ def get_ncboost_header(db_path):
     out = out.decode('UTF-8').strip().split('\t')
     return(out)
 
-def ncboost_query(l_chr, l_pos, tb):
+def ncboost_query(l_chr, l_pos, l_ref, l_alt, tb):
     query = f"{l_chr}:{l_pos}-{l_pos}"
     records = tb.querys(query)
     res = [x for x in records]
-    return(res[0])
+    try:
+        out = pl.DataFrame(res, orient='row')
+        out = out.filter((pl.col('column_2') == l_ref) & (pl.col('column_3') == l_alt))
+        return(out)
+    except:
+        return(pl.DataFrame(None))
 
-def add_ncboost_chr(l_chr, data, db_path):
+def ncboost_query_chr(data, l_chr, db_path):
+    data = data.filter(pl.col('chr') == l_chr)
+    ncboost_header = get_ncboost_header(db_path)
+    old_dtypes = data.dtypes
+    old_header = set(data.columns)
     ncboost_path = f"{db_path}/WG_chr{l_chr}.tsv.gz"
     tb = tabix.open(ncboost_path)
-    data = data.filter(pl.col('chr') == l_chr)
-    data = data.with_columns(pl.struct(['chr', 'pos'])
-                             .map_elements(lambda x: partial(ncboost_query, tb = tb)(x['chr'], x['pos']), 
-                      return_dtype = pl.List(pl.String)
-                      ).alias('ncboost_features'))
+    out = []
+    for var in data.iter_rows(named=True):
+        l_df = ncboost_query(l_chr=var['chr'], l_pos=var['pos'], l_ref=var['ref'], l_alt=var['alt'], tb=tb)
+        if not l_df.is_empty():
+            out.append(l_df)
+    if len(out) != 0:
+        df = pl.concat(out)
+        df.columns  = ncboost_header
+        df = df.with_columns(pl.col('pos').cast(int))
+        extra_columns = [x for x in old_header if x not in df.columns]
+        data = data.select(['chr', 'pos', 'ref', 'alt'] + extra_columns)
+        data = data.join(df, how='left', on=['chr', 'pos', 'ref', 'alt'])
+        data = data.with_columns([pl.col(l_col).cast(pl.String) for l_col in data.columns])
+        data = data.with_columns(pl.col('pos').cast(int))
+    else:
+        empty_header = ['chr', 'pos', 'ref', 'alt'] + [x for x in old_header if x not in ncboost_header] + [x for x in ncboost_header if x not in ['chr', 'pos', 'ref', 'alt']]
+        data = pl.DataFrame(None, schema=empty_header, schema_overrides={x : str for x in empty_header})
+        data = data.with_columns(pl.col('pos').cast(int))
     return(data)
 
 def add_ncboost_features(data, db_path):
-    old_header = data.columns
-    ncb_header = get_ncboost_header(db_path)
-    result_dic = {}
-    data_dict = data.partition_by('chr', as_dict = True)
-    for l_chr in tqdm(data_dict.keys(), desc="Chromosomes"):
-        result_dic[l_chr[0]] = add_ncboost_chr(l_chr = l_chr[0], data = data_dict[l_chr], db_path = db_path)
-    data = pl.concat(result_dic.values())
-    data = data.with_columns(struct = pl.col('ncboost_features').list.to_struct()).unnest('struct').drop('ncboost_features')
-    data = data.drop([f'field_{x}' for x in [0, 1, 2]])
-    data.columns = old_header + ncb_header[3:]
-    return(data)
+    results = []
+    for l_chr in tqdm(get_chr_list(), total=24, desc='Chromosome'):
+        results.append(ncboost_query_chr(data, l_chr, db_path))
+    return(pl.concat(results))
 
 def ncboost_split_train_test(data, l_partition):
     l_training_set = data.filter(pl.col('partition') != l_partition)
