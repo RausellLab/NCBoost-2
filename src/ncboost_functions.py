@@ -12,7 +12,7 @@ from sklearn.metrics import precision_recall_curve, auc, roc_curve
 from multiprocessing.pool import ThreadPool as Pool
 
 
-def get_feature_list() -> tuple(list):
+def get_feature_list() -> tuple[list]:
     """
     Return a tuple of 4 lists, respectively containing the name of the 4 feature subsets used by NCBoost: A, B, C and D.
 
@@ -29,7 +29,7 @@ def get_feature_list() -> tuple(list):
     return(A, B, C, D)
 
 
-def get_ncboost_header(db_path: str) -> list(str):
+def get_ncboost_header(db_path: str) -> list[str]:
     """
     Return a list containing the column names of NCBoost prescored file.
     
@@ -128,7 +128,7 @@ def add_ncboost_features(data: pl.DataFrame, db_path: str) -> pl.DataFrame:
     return(pl.concat(results))
 
 
-def ncboost_split_train_test(data: pl.DataFrame, l_partition:int) -> tuple(pl.DataFrame):
+def ncboost_split_train_test(data: pl.DataFrame, l_partition: int) -> tuple[pl.DataFrame]:
     """
     Split polars DataFrame containing variants into training and testing sets based on the specified partition (from 1 to 10)
 
@@ -144,12 +144,12 @@ def ncboost_split_train_test(data: pl.DataFrame, l_partition:int) -> tuple(pl.Da
     return(l_training_set, l_testing_set)
 
 
-def get_model_feature_importance(model: xgb.model, l_partition: int) -> pl.DataFrame:
+def get_model_feature_importance(model: xgb.Booster, l_partition: int) -> pl.DataFrame:
     """
     Return the feature importance of the xgboost model trained on the specified partition (from 1 to 10)
 
     Parameters:
-        model (xbg.model) : trained xgboost model
+        model (xbg.Booster) : trained xgboost model
         l_partition (int) : index of the partition
 
     Returns:
@@ -164,7 +164,7 @@ def get_model_feature_importance(model: xgb.model, l_partition: int) -> pl.DataF
     return(l_feature_importance_df)
     
 
-def ncboost_train(data: pl.DataFrame, features: list, save_path: str) -> tuple(dict(xgb.model), pl.DataFrame, pl.DataFrame):
+def ncboost_train(data: pl.DataFrame, features: list, save_path: str) -> tuple[dict[xgb.Booster], pl.DataFrame, pl.DataFrame]:
     """
     Train 10 xgboost models on the specified data as train/test sets and the specified features. Feature importance will be computed, saved and returned. 
 
@@ -174,7 +174,7 @@ def ncboost_train(data: pl.DataFrame, features: list, save_path: str) -> tuple(d
         save_path : path to the folder where models, scored data and training figures/metrics will be saved
 
     Returns:
-        tuple(dict(xgb.model), pl.DataFrame, pl.DataFrame) : Return a dict containing the 10 models, the feature importance across the 10 models and the scored data
+        tuple(dict(xgb.Booster), pl.DataFrame, pl.DataFrame) : Return a dict containing the 10 models, the feature importance across the 10 models and the scored data
     """
     df_schema = {l_feature : float for l_feature in features}
     df_schema['partition'] = int
@@ -246,7 +246,7 @@ def ncboost_train(data: pl.DataFrame, features: list, save_path: str) -> tuple(d
     return(model_dict, t_feature_importance_df, annotated_data)
 
 
-def plot_feature_importance(feature_importance_df: pl.DataFrame, save_path: str):
+def plot_feature_importance(feature_importance_df: pl.DataFrame, save_path: str) -> None:
     """
     Plot and save the feature importance (+/- std) of the feature set used to train the 10 models 
 
@@ -267,7 +267,7 @@ def plot_feature_importance(feature_importance_df: pl.DataFrame, save_path: str)
     plt.show()
 
 
-def get_fpr_tpr_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
+def get_fpr_tpr_auc(df: pl.DataFrame, score: str) -> tuple[list, list, float]:
     """
     Compute the fpr, tpr and auroc of the dataset for the queried score
 
@@ -284,7 +284,7 @@ def get_fpr_tpr_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
     return fpr, tpr, auroc
 
 
-def get_pre_rec_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
+def get_pre_rec_auc(df: pl.DataFrame, score: str) -> tuple[list, list, float]:
     """
     Compute the precision, recall and aupr of the dataset for the queried score
 
@@ -301,7 +301,7 @@ def get_pre_rec_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
     return precision, recall, auprc
 
 
-def plot_roc_prc(annotated_data: pl.DataFrame, save_path: str, scores: list(str)= ['NCBoost', 'CADD', 'ReMM'], figure_name: str= 'ROC_PRC'):
+def plot_roc_prc(annotated_data: pl.DataFrame, save_path: str, scores: list[str]= ['NCBoost', 'CADD', 'ReMM'], figure_name: str= 'ROC_PRC') -> None:
     """
     Plot the ROC and PR curves of the input data for the specified scores and save the corresponding figure
 
@@ -382,7 +382,7 @@ def ncboost_score(data: pl.DataFrame, model_name: str= 'ncboost_models') -> pl.D
     return(scored_data)
 
 
-def load_models(path) -> dict(xgb.model):
+def load_models(path) -> dict[xgb.Booster]:
     """
     Load the bundle of trained 10 models.
 
@@ -390,7 +390,7 @@ def load_models(path) -> dict(xgb.model):
         path : path to the folder containing the bundle of 10 models to be loaded
 
     Returns:
-        (dict(xgb.model)) : dictionnary containing the 10 trained ncboost models
+        (dict(xgb.Booster)) : dictionnary containing the 10 trained ncboost models
     """ 
     model_dict = {}
     for l_id in range(1,11):
@@ -400,12 +400,12 @@ def load_models(path) -> dict(xgb.model):
     return(model_dict)
 
 
-def apply_model(data_model_tuple: tuple(pl.DataFrame, xgb.model)) -> pl.DataFrame:
+def apply_model(data_model_tuple: tuple[pl.DataFrame, xgb.Booster]) -> pl.DataFrame:
     """
     Use one specified NCBoost model to infer the score of the input data 
 
     Parameters:
-        data_model_tuple (tuple(pl.DataFrame, xgb.model)) : tuple containing a polars DataFrame with the variant features and the ncboost model of the corresponding partition.
+        data_model_tuple (tuple(pl.DataFrame, xgb.Booster)) : tuple containing a polars DataFrame with the variant features and the ncboost model of the corresponding partition.
 
     Returns:
         (pl.DataFrame): polars DataFrame containing the input data scored by the provided NCBoost model.
