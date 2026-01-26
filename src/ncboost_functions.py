@@ -29,6 +29,17 @@ def get_feature_list() -> tuple[list]:
     return(A, B, C, D)
 
 
+def get_chr_list() -> list:
+    """
+    Return a list containing the 24 chromosomes [1.-22] X Y.
+
+    Returns:
+        (list) : list containing the 24 chromosomes  
+    """
+    return([f'{x}' for x in range(1,23)] + ['X', 'Y'])
+
+
+
 def get_ncboost_header(db_path: str) -> list[str]:
     """
     Return a list containing the column names of NCBoost prescored file.
