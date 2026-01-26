@@ -12,7 +12,13 @@ from sklearn.metrics import precision_recall_curve, auc, roc_curve
 from multiprocessing.pool import ThreadPool as Pool
 
 
-def get_feature_list():
+def get_feature_list() -> tuple(list):
+    """
+    Return a tuple of 4 lists, respectively containing the name of the 4 feature subsets used by NCBoost: A, B, C and D.
+
+    Returns:
+        tuple(list) : tuple of 4 lists containing respectively the names of A, B, C and D sets of features  
+    """
     A = ['GerpN', 'priPhCons', 'mamPhCons', 'verPhCons', 'priPhyloP', 'mamPhyloP', 'verPhyloP', 'GerpRS', 'GerpRSpval',
       'GerpS', 'ZooPriPhyloP', 'ZooVerPhyloP', 'ZooRoCC', 'ZooUCE']
     B = ['bStatistic', 'Roulette-AR',  'CDTS', 'mean_MAF', 'mean_MAF_afr', 'mean_MAF_ami', 'mean_MAF_amr', 'mean_MAF_asj', 'mean_MAF_eas',
@@ -22,7 +28,17 @@ def get_feature_list():
     D = ['GC', 'CpG', 'SpliceAI']
     return(A, B, C, D)
 
-def get_ncboost_header(db_path):
+
+def get_ncboost_header(db_path: str) -> list(str):
+    """
+    Return a list containing the column names of NCBoost prescored file.
+    
+    Parameters:
+        db_path (str) : the path of the folder containing the prescored files. Path be absolute or relative.
+
+    Returns:
+        list(str) : list containing the column names of NCBoost prescored file
+    """
     path_to_file = f"{db_path}/WG_chr1.tsv.gz"
     command = f"zgrep -m 1 chr {path_to_file}"
     proc = subprocess.Popen([command], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell = True)
@@ -30,7 +46,21 @@ def get_ncboost_header(db_path):
     out = out.decode('UTF-8').strip().split('\t')
     return(out)
 
-def ncboost_query(l_chr, l_pos, l_ref, l_alt, tb):
+
+def ncboost_query(l_chr: str, l_pos: int, l_ref: str, l_alt: str, tb: tabix.open) -> pl.DataFrame:
+    """
+    Return NCBoost annotations and score contained in the NCBoost prescored file for a specific chr:pos-pos:ref>alt SNV.
+    
+    Parameters:
+        l_chr (str) : chromosome index of the variant, 1-22, X or Y
+        l_pos (int) : absolute genomic position of the variant in GRCh38 genome assembly coordinates.
+        l_ref (str) : reference allele at the position of the variant
+        l_alt (str) : alternative allele representing the variant
+        tb (tabix.open) : tabix handle of the indexed file
+
+    Returns:
+        pl.DataFrame : polars df containing the annotation and scores present in the NCBoost prescored file for the queried variant.
+    """
     query = f"{l_chr}:{l_pos}-{l_pos}"
     records = tb.querys(query)
     res = [x for x in records]
@@ -41,7 +71,19 @@ def ncboost_query(l_chr, l_pos, l_ref, l_alt, tb):
     except:
         return(pl.DataFrame(None))
 
-def ncboost_query_chr(data, l_chr, db_path):
+
+def ncboost_query_chr(data: pl.DataFrame, l_chr: str, db_path: str) -> pl.DataFrame:
+    """
+    Query NCBoost annotations and score for all variants mapped to as specific chromosome in GRCh38 genomic coordinates.
+    
+    Parameters:
+        data (pl.DataFrame) : polars DataFrame of N rows, each row describing a variant with at least the following fields: chr, pos, ref & alt
+        l_chr (str) : chromosome index of the corresponding batch of variant
+        db_path (str) : the path of the folder containing the prescored files. Path be absolute or relative
+
+    Returns:
+        pl.DataFrame : polars df containing the annotation and scores present in the NCBoost prescored file for all variants on the specified chromosome.
+    """
     data = data.filter(pl.col('chr') == l_chr)
     ncboost_header = get_ncboost_header(db_path)
     old_dtypes = data.dtypes
@@ -68,18 +110,51 @@ def ncboost_query_chr(data, l_chr, db_path):
         data = data.with_columns(pl.col('pos').cast(int))
     return(data)
 
-def add_ncboost_features(data, db_path):
+
+def add_ncboost_features(data: pl.DataFrame, db_path: str) -> pl.DataFrame:
+    """
+    Query NCBoost annotations and score for all SNVs described in a polars DataFrame.
+    
+    Parameters:
+        data (pl.DataFrame) : polars DataFrame of N rows, each row describing a variant with at least the following fields: chr, pos, ref & alt
+        db_path (str) : the path of the folder containing the prescored files. Path be absolute or relative
+
+    Returns:
+        pl.DataFrame : polars df containing the annotation and scores present in the NCBoost prescored file for all input variants.
+    """
     results = []
     for l_chr in tqdm(get_chr_list(), total=24, desc='Chromosome'):
         results.append(ncboost_query_chr(data, l_chr, db_path))
     return(pl.concat(results))
 
-def ncboost_split_train_test(data, l_partition):
+
+def ncboost_split_train_test(data: pl.DataFrame, l_partition:int) -> tuple(pl.DataFrame):
+    """
+    Split polars DataFrame containing variants into training and testing sets based on the specified partition (from 1 to 10)
+
+    Parameters:
+        data (pl.DataFrame) : polars DataFrame of N rows, each row describing a variant with at least the following fields: chr, pos, ref, alt & partition
+        l_partition (int) : index of the partition to use as train/test split
+
+    Returns:
+        tuple(pl.DataFrame) : tuple returning the training and testing sets, respecetively, as defined by the input partition id.
+    """
     l_training_set = data.filter(pl.col('partition') != l_partition)
     l_testing_set = data.filter(pl.col('partition') == l_partition)
     return(l_training_set, l_testing_set)
 
-def get_model_feature_importance(model, l_partition):
+
+def get_model_feature_importance(model: xgb.model, l_partition: int) -> pl.DataFrame:
+    """
+    Return the feature importance of the xgboost model trained on the specified partition (from 1 to 10)
+
+    Parameters:
+        model (xbg.model) : trained xgboost model
+        l_partition (int) : index of the partition
+
+    Returns:
+        pl.DataFrame : polars df containing the importance of each feature in the specified model.
+    """
     feature_importance_dict = model.get_score(fmap = '', importance_type = 'total_gain')
     total = sum(feature_importance_dict.values(), 0.0)
     feature_importance_dict = {k: np.round(v / total, 5) for k, v in feature_importance_dict.items()}
@@ -88,11 +163,19 @@ def get_model_feature_importance(model, l_partition):
     l_feature_importance_df = l_feature_importance_df.with_columns(pl.lit(l_partition).cast(pl.Int64).alias('partition'))
     return(l_feature_importance_df)
     
-def ncboost_train(data, features, save_path):
-    # data: variant dataset as input, already annotated with NCBoost features and with 
-    # 'label' information:  for negatives,  for positives.
-    # features: list of features present in data to be used for training.
-    # save_path: the path to save the trained models and the feature importance file.  
+
+def ncboost_train(data: pl.DataFrame, features: list, save_path: str) -> tuple(dict(xgb.model), pl.DataFrame, pl.DataFrame):
+    """
+    Train 10 xgboost models on the specified data as train/test sets and the specified features. Feature importance will be computed, saved and returned. 
+
+    Parameters:
+        data (pl.DataFrame) : polars DataFrame containing annotated variants
+        features : list of features to be used for training/testing
+        save_path : path to the folder where models, scored data and training figures/metrics will be saved
+
+    Returns:
+        tuple(dict(xgb.model), pl.DataFrame, pl.DataFrame) : Return a dict containing the 10 models, the feature importance across the 10 models and the scored data
+    """
     df_schema = {l_feature : float for l_feature in features}
     df_schema['partition'] = int
     feature_importance_df = pl.DataFrame(schema = df_schema)
@@ -144,29 +227,36 @@ def ncboost_train(data, features, save_path):
         # Saving models
         model_dict[f'model_{l_partition}'] = model
         model.save_model(f'{save_path}/model_{l_partition}.json')
-
     annotated_data.write_csv(file = f'{save_path}/scored_data.tsv', 
                             separator = "\t", 
                             include_header = True,
                             null_value = 'NA'
                             )
-    
     t_feature_importance_df = feature_importance_df.drop('partition')
     t_feature_importance_df = t_feature_importance_df.transpose()
     t_feature_importance_df = t_feature_importance_df.with_columns(features = pl.Series(feature_importance_df.columns[:-1]))
     t_feature_importance_df = t_feature_importance_df.with_columns(pl.mean_horizontal(pl.all()).alias('feature_mean'))
     t_feature_importance_df = t_feature_importance_df.sort('feature_mean', descending = True, nulls_last = True)
     t_feature_importance_df = t_feature_importance_df.drop('feature_mean')
-
     t_feature_importance_df.write_csv(file = f'{save_path}/feature_importance.tsv', 
                             separator = "\t", 
                             include_header = True,
                             null_value = 'NA'
                             )
-        
     return(model_dict, t_feature_importance_df, annotated_data)
 
-def plot_feature_importance(feature_importance_df, save_path):
+
+def plot_feature_importance(feature_importance_df: pl.DataFrame, save_path: str):
+    """
+    Plot and save the feature importance (+/- std) of the feature set used to train the 10 models 
+
+    Parameters:
+        feature_importance_df : polars DataFrame containing the feature importance of the M features across the 10 models
+        save_path : path to the folder where models, scored data and training figures/metrics were saved
+
+    Returns:
+        (None)
+    """
     feature_names = feature_importance_df['features'].to_list()
     feature_importance_df = feature_importance_df.unpivot(index = 'features')
     fig, ax = plt.subplots(figsize=(5,8))
@@ -176,26 +266,59 @@ def plot_feature_importance(feature_importance_df, save_path):
     # plt.savefig(f'{save_path}/Feature_importance.pdf', bbox_inches='tight', format='pdf')
     plt.show()
 
-def get_fpr_tpr_auc(df, score):
+
+def get_fpr_tpr_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
+    """
+    Compute the fpr, tpr and auroc of the dataset for the queried score
+
+    Parameters:
+        df (pl.DataFrame) : polars DataFrame containing at least the label and the queried score for each variant
+        score (str) : name of score to be considered to compute the tpr, fpr and auroc
+
+    Returns:
+        tuple(list, list, float) : returns fpr and tpr at each split and the corresponding auroc
+    """
     df = df.filter(pl.col(score).is_not_null())
     fpr, tpr, _ = roc_curve(df['label'], df[score])
     auroc = auc(fpr, tpr)
     return fpr, tpr, auroc
 
-def get_pre_rec_auc(df, score):
+
+def get_pre_rec_auc(df: pl.DataFrame, score: str) -> tuple(list, list, float):
+    """
+    Compute the precision, recall and aupr of the dataset for the queried score
+
+    Parameters:
+        df (pl.DataFrame) : polars DataFrame containing at least the label and the queried score for each variant
+        score (str) : name of score to be considered to compute the precision, recall and aupr
+
+    Returns:
+        tuple(list, list, float) : returns precision and recall at each split and the corresponding aurpr
+    """
     df = df.filter(pl.col(score).is_not_null())
     precision, recall, _ = precision_recall_curve(df['label'], df[score])
     auprc  = auc(recall, precision)
     return precision, recall, auprc
 
-def plot_roc_prc(annotated_data, save_path, scores = ['NCBoost', 'CADD', 'ReMM'], figure_name='ROC_PRC'):
+
+def plot_roc_prc(annotated_data: pl.DataFrame, save_path: str, scores: list(str)= ['NCBoost', 'CADD', 'ReMM'], figure_name: str= 'ROC_PRC'):
+    """
+    Plot the ROC and PR curves of the input data for the specified scores and save the corresponding figure
+
+    Parameters:
+        annotated_data (pl.DataFrame) : polars DataFrame containing the variants' label and scores
+        save_path (str) : path to the folder where the figure will be saved
+        scores (list(str)) : list of names of scores to be added to the ROC and PR curves
+        figure_name (str) : name of the file containing the plot - default is 'ROC_PRC'
+
+    Returns:
+        (None)
+    """    
     fig, axs = plt.subplots(1, 2, figsize=(8,4))
     lw = 2
-
     color_dict = {'NCBoost' : '#b5179e', 
                   'CADD' : 'orange',
                   'ReMM' : 'blue'}
-
     for l_score in scores:
         fpr, tpr, auroc = get_fpr_tpr_auc(annotated_data, l_score)
         axs[0].plot(fpr, tpr, color=color_dict[l_score], lw=lw, label=f'{l_score} : {auroc:0.2f}')
@@ -226,7 +349,18 @@ def plot_roc_prc(annotated_data, save_path, scores = ['NCBoost', 'CADD', 'ReMM']
     # plt.savefig(f'{save_path}/{figure_name}.pdf', format='pdf', bbox_inches='tight')
     plt.show()
 
-def ncboost_score(data, model_name='ncboost_models'):
+
+def ncboost_score(data: pl.DataFrame, model_name: str= 'ncboost_models') -> pl.DataFrame:
+    """
+    Score the input data using the specific model bundle
+
+    Parameters:
+        data (pl.DataFrame) : polars DataFrame containing the annotated variants to be scored
+        model_name : name of the folder containing the bundle of 10 models to be used to infer NCBoost score
+
+    Returns:
+        pl.DataFrame : polars dataframe containing variants and their corresponding NCBoost score
+    """  
     geneDB_path = 'data/geneDB_ncboost2.tsv'
     partition_data = pl.read_csv(geneDB_path, 
                                     separator='\t', 
@@ -247,7 +381,17 @@ def ncboost_score(data, model_name='ncboost_models'):
     scored_data = scored_data.sort(by=['chr', 'pos'])
     return(scored_data)
 
-def load_models(path):
+
+def load_models(path) -> dict(xgb.model):
+    """
+    Load the bundle of trained 10 models.
+
+    Parameters:
+        path : path to the folder containing the bundle of 10 models to be loaded
+
+    Returns:
+        (dict(xgb.model)) : dictionnary containing the 10 trained ncboost models
+    """ 
     model_dict = {}
     for l_id in range(1,11):
         model = xgb.XGBRegressor()
@@ -255,7 +399,17 @@ def load_models(path):
         model_dict[l_id] = model
     return(model_dict)
 
-def apply_model(data_model_tuple):
+
+def apply_model(data_model_tuple: tuple(pl.DataFrame, xgb.model)) -> pl.DataFrame:
+    """
+    Use one specified NCBoost model to infer the score of the input data 
+
+    Parameters:
+        data_model_tuple (tuple(pl.DataFrame, xgb.model)) : tuple containing a polars DataFrame with the variant features and the ncboost model of the corresponding partition.
+
+    Returns:
+        (pl.DataFrame): polars DataFrame containing the input data scored by the provided NCBoost model.
+    """ 
     data, model = data_model_tuple
     y_pred = model.predict(np.asarray(data[model.feature_names_in_]))
     data = data.with_columns(pl.lit(y_pred).cast(float).alias('NCBoost'))
