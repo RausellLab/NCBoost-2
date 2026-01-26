@@ -45,7 +45,7 @@ The following sections will guide you through the steps needed for the annotatio
 NCBoost models are stored as github large file object, and require the installation of github-lfs.
 On Linux, github-lfs can be easily installed by running:
 ```
-curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt install git-lfs
 ```
 
 
