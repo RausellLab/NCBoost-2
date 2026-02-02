@@ -85,7 +85,7 @@ or
 ```
 wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
 ```
-Unpack the tar file and move the data to the data/ fodler:
+Unpack the tar file and move the data to the data/ folder:
 ```
 tar -zxvf WG_annotated.tar.gz
 mv -r WG_annotated data/
@@ -94,6 +94,7 @@ mv -r WG_annotated data/
 Complete details about each features are available at [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 #### 4. Variant input format
+##### tsv file annotation
 Variants have to be reported in 1-based, GrCh38 genomic coordinates. The required variant file is a tab-delimited textfile with column headers following the format:
 ```
 chr pos   ref  alt
@@ -103,7 +104,25 @@ chr pos   ref  alt
 The *chr* column should not contain the 'chr' prefix.
 Any other columns can be added in addition to the required four columns.
 
-#### 5. NCBoost training
+##### vcf file annotation
+NCBoost can also score single-row bi-allelic vcf files. Single-row multi-allelic loci vcfs should be parsed using bcftools first.
+
+Don't forget to first select the ncboost2 environment before running the script in jupyter:
+```
+conda activate ncboost2
+
+```
+Then run: 
+```
+python src/ncboost_annotate.py /path/to_vcf/file
+```
+
+
+#### 5. Annotating variants with prescored NCBoost score
+
+
+
+#### 6. NCBoost training
 NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
 
 The annotation requires to download the full set of features used by NCBoost (132 Go). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
@@ -113,8 +132,13 @@ Don't forget to first select the ncboost2 environment before running the script 
 conda activate ncboost2
 
 ```
+ncboost_train.ipynb should be run through a jupyter notebook environment, while the ncboost_train.py script should be run as follows:
 
-#### 6. NCBoost scoring
+```
+python src/ncboost_train.py
+```
+
+#### 7. NCBoost model inference
 NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_score.ipynb or its python version equivalent, ncboost_score.py. 
 It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 The annotation requires to download the full set of features used by NCBoost (132 Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
@@ -127,7 +151,7 @@ conda activate ncboost2
 
 ncboost_score.ipynb should be run through a jupyter notebook environment, while the ncboost_score.py script should be run as follows:
 ```
-python ncboost_score.py path/to/input/file.tsv 
+python src/ncboost_score.py path/to/input/file.tsv 
 ```
 
 The output file will be created in the same folder as the input file, as a tab-delimited text file with the following columns: 

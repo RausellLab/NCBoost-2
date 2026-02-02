@@ -139,6 +139,31 @@ def add_ncboost_features(data: pl.DataFrame, db_path: str) -> pl.DataFrame:
     return(pl.concat(results))
 
 
+def ncboost_query_for_vcf(l_chr: str, l_pos: int, l_ref: str, l_alt: str, tb: tabix.open) -> pl.DataFrame:
+    """
+    Return NCBoost chromosome rank percentile contained in the NCBoost prescored file for a specific chr:pos-pos:ref>alt SNV.
+    
+    Parameters:
+        l_chr (str) : chromosome index of the variant, 1-22, X or Y
+        l_pos (int) : absolute genomic position of the variant in GRCh38 genome assembly coordinates.
+        l_ref (str) : reference allele at the position of the variant
+        l_alt (str) : alternative allele representing the variant
+        tb (tabix.open) : tabix handle of the indexed file
+
+    Returns:
+        pl.DataFrame : polars df containing the annotation and scores present in the NCBoost prescored file for the queried variant.
+    """
+    query = f"{l_chr}:{l_pos}-{l_pos}"
+    records = tb.querys(query)
+    res = [x for x in records]
+    try:
+        out = pl.DataFrame(res, orient='row')
+        out = out.filter((pl.col('column_2') == l_ref) & (pl.col('column_3') == l_alt))
+        return(out[0,-1])
+    except:
+        return(None)
+
+
 def ncboost_split_train_test(data: pl.DataFrame, l_partition: int) -> tuple[pl.DataFrame]:
     """
     Split polars DataFrame containing variants into training and testing sets based on the specified partition (from 1 to 10)
