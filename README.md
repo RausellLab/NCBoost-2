@@ -30,6 +30,8 @@ The file contains the following columns:
 *NCBoost_Score*, NCBoost 2 score. NCBoost score ranges from 0 to 1. The higher the score, the higher the pathogenicity potential of the position.  
 *NCBoost_chr_rank_perc*, chromosome-wise rank percentile (ranging from 0 to 1) of the corresponding NCBoost 2 score. The higher the rank percentile, the higher the pathogenic potential of the position.  
 
+We advise the users to use the NCBoost_chr_rank_perc rather than NCBoost_score, as it is more comparable across chromosomes.
+
 ## NCBoost gene database
 The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv).
 
@@ -104,6 +106,32 @@ chr pos   ref  alt
 The *chr* column should not contain the 'chr' prefix.
 Any other columns can be added in addition to the required four columns.
 
+
+#### 5. Annotating variants with prescored NCBoost score
+
+Make sure that you are running the scripts from the root of this folder (NCBoost-2/).
+
+##### tsv file annotation
+NCBoost can score files following the format specified just above.
+
+Don't forget to first select the ncboost2 environment before running the script in jupyter:
+```
+conda activate ncboost2
+
+```
+Then run: 
+```
+python src/ncboost_annotate_tsv.py /path/to/tsv/file /path/to/prescored/folder
+```
+
+example:
+```
+python src/ncboost_annotate_tsv.py data/testing/test.vcf data/WG_annotated
+```
+
+NCBoost's score chromosome rank percentile will be added as an extra column to the file.
+
+
 ##### vcf file annotation
 NCBoost can also score single-row bi-allelic vcf files. Single-row multi-allelic loci vcfs should be parsed using bcftools first.
 
@@ -114,12 +142,10 @@ conda activate ncboost2
 ```
 Then run: 
 ```
-python src/ncboost_annotate.py /path/to_vcf/file
+python src/ncboost_annotate_vcf.py /path/to_vcf/file
 ```
 
-
-#### 5. Annotating variants with prescored NCBoost score
-
+NCBoost's score chromosome rank percentile will be added at the end of the INFO field of each variant.
 
 
 #### 6. NCBoost training

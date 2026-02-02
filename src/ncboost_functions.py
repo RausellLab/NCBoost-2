@@ -5,7 +5,7 @@ import pandas as pd
 import subprocess
 import tabix
 from functools import partial
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import precision_recall_curve, auc, roc_curve
@@ -139,7 +139,7 @@ def add_ncboost_features(data: pl.DataFrame, db_path: str) -> pl.DataFrame:
     return(pl.concat(results))
 
 
-def ncboost_query_for_vcf(l_chr: str, l_pos: int, l_ref: str, l_alt: str, tb: tabix.open) -> pl.DataFrame:
+def ncboost_query_score(l_chr: str, l_pos: int, l_ref: str, l_alt: str, tb: tabix.open) -> pl.DataFrame:
     """
     Return NCBoost chromosome rank percentile contained in the NCBoost prescored file for a specific chr:pos-pos:ref>alt SNV.
     
