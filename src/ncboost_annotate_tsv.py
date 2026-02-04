@@ -1,6 +1,9 @@
 import polars as pl
 import os, sys
 from tqdm import tqdm
+import subprocess
+import tabix
+from src.ncboost_functions import get_chr_list, ncboost_query_score
 
 input_path = sys.argv[1]
 db_path = sys.argv[2]
@@ -11,17 +14,7 @@ output_path = f'{name}_scored.tsv'
 
 
 ## Stream-load and annotate variants
-# This scripts receives a tsv file as input and add a new column containing NCBoost screo rank percentile per chromosome.
-
-def get_nvar_in_file(input_path):
-    command = f"wc -l {input_path}"
-    proc = subprocess.Popen([command], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell = True)
-    out, _ = proc.communicate()
-    l_var = int(out.decode("utf-8").split(' ')[0])
-    return(l_var)
-
-from src.ncboost_functions import get_chr_list, ncboost_query_score
-import tabix
+# This scripts receives a tsv file as input and add a new column containing NCBoost score chromosome rank percentile.
 
 q_chr = 0
 n_annotated = 0

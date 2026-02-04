@@ -450,3 +450,19 @@ def apply_model(data_model_tuple: tuple[pl.DataFrame, xgb.Booster]) -> pl.DataFr
     y_pred = model.predict(np.asarray(data[model.feature_names_in_]))
     data = data.with_columns(pl.lit(y_pred).cast(float).alias('NCBoost'))
     return(data)
+
+def get_nvar_in_file(input_path : str) -> int:
+    """
+    Extract the number of lines in file to create the correpsonding progress bar
+    Parameters:
+        input_path (str) : path to the variant file.
+
+    Returns:
+        (int): number of lines .
+    """ 
+    command = f"wc -l {input_path}"
+    proc = subprocess.Popen([command], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell = True)
+    out, _ = proc.communicate()
+    l_var = int(out.decode("utf-8").split(' ')[0])
+    return(l_var)
+
