@@ -35,7 +35,7 @@ These files contains the following columns:
 We advise the users to use the NCBoost_chr_rank_perc rather than NCBoost_score, as it is more comparable across chromosomes.
 
 ## NCBoost gene database
-The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv).
+The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work for more than 19433 protein-codign genes are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv).
 
 ## NCBoost software
 The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
@@ -81,9 +81,9 @@ conda env create --name ncboost2 --file=ncboost2.yml
 
 #### 3. Download the feature file
 
-NCBoost 2 features for 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz) (total size = 132 Go) as per-chromosome compressed tabix-indexed files.
+NCBoost v2 features for all possible SNVs at 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz) (total size = XXX Go) as per-chromosome compressed tabix-indexed files.
 ```
-gsutil cp gs://ncboost-cbl/WG_annotated.tar.gz
+gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz
 ```
 or
 ```
@@ -91,14 +91,16 @@ wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
 ```
 Unpack the tar file and move the data to the data/ folder:
 ```
-tar -zxvf WG_annotated.tar.gz
-mv -r WG_annotated data/
+tar -zxvf ncboost_v2_hg38_20260202_full.tar.gz
+mv -r ncboost_v2_hg38_20260202_full data/
 ```
 
 Complete details about each features are available at [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 #### 4. Variant input format
-##### tsv file annotation
+Input SNVs can be fed to NCBoost as either .tsv or .vcf files:
+
+##### tsv file
 Variants have to be reported in 1-based, GrCh38 genomic coordinates. The required variant file is a tab-delimited textfile with column headers following the format:
 ```
 chr pos   ref  alt
@@ -107,6 +109,10 @@ chr pos   ref  alt
 
 The *chr* column should not contain the 'chr' prefix.
 Any other columns can be added in addition to the required four columns.
+
+##### vcf file
+Variants have to be reported in 1-based, GrCh38 genomic coordinates.
+The *CHROM* column should not contain the 'chr' prefix.
 
 
 #### 5. Annotating variants with prescored NCBoost score
@@ -128,7 +134,7 @@ python src/ncboost_annotate_tsv.py /path/to/tsv/file /path/to/prescored/folder
 
 example:
 ```
-python src/ncboost_annotate_tsv.py data/testing/test.vcf data/WG_annotated
+python src/ncboost_annotate_tsv.py data/testing/testing_data.tsv data/WG_annotated
 ```
 
 NCBoost's score chromosome rank percentile will be added as an extra column to the file.
