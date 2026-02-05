@@ -16,37 +16,26 @@ output_path = f'{name}_scored.tsv'
 ## Stream-load and annotate variants
 # This scripts receives a tsv file as input and add a new column containing NCBoost score chromosome rank percentile.
 
-q_chr = 0
+ncboost_path = f"{db_path}/ncboost_v2_hg38_20260202_light.tsv.gz"
+tb = tabix.open(ncboost_path)
+
 n_annotated = 0
 n_var = 0
-for l_chr in tqdm(get_chr_list(), desc='Chromosome', total=len(get_chr_list()), leave=True):
-    if q_chr != l_chr:
-        q_chr = l_chr
-        ncboost_path = f"{db_path}/WG_chr{l_chr}.tsv.gz"
-        tb = tabix.open(ncboost_path)
-    else:
-        tb = tb
 
+# Loading variants chromosome per chromosome
+for l_chr in tqdm(get_chr_list(), desc='Chromosome', total=len(get_chr_list()), leave=True):
     df = (
         pl.scan_csv(input_path, separator="\t",schema_overrides={'chr':str, 'pos':int})
         .filter(pl.col("chr") == l_chr)
         .collect(streaming=True)
     )
-
     ncb_score_list = []
-
+    # iterating on variants and annotate with NCBoost chr rank percentile
     for l_var in tqdm(df.iter_rows(named=True), desc='Variants', total=df.shape[0], leave=False):
         l_chr = l_var['chr']
         l_pos = l_var['pos']
         l_ref = l_var['ref']
         l_alt = l_var['alt']
-
-        if q_chr != l_chr:
-            q_chr = l_chr
-            ncboost_path = f"{db_path}/WG_chr{l_chr}.tsv.gz"
-            tb = tabix.open(ncboost_path)
-        else:
-            tb = tb
         out = []
         ncb_score = ncboost_query_score(l_chr=l_chr, l_pos=l_pos, l_ref=l_ref, l_alt=l_alt, tb=tb)
         ncb_score_list.append(ncb_score)

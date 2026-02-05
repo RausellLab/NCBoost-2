@@ -26,10 +26,13 @@ def get_nvar_in_file(input_path):
 
 from src.ncboost_functions import ncboost_query_score
 
-q_chr = '0'
+# q_chr = '0'
 reader = vcfpy.Reader.from_path(input_path)
 reader.header.add_info_line({'ID' : 'NCBoost', 'Type' : 'Float', 'Description' : 'NCBoost hg38 score', 'Number' : 1})
 writer = vcfpy.Writer.from_path(output_path, reader.header)
+
+ncboost_path = f"{db_path}/ncboost_v2_hg38_20260202_light.tsv.gz"
+tb = tabix.open(ncboost_path)
 
 n_var = get_nvar_in_file(input_path)
 n_annotated = 0
@@ -38,13 +41,6 @@ for record in tqdm(reader, desc='Variants', total=n_var):
     l_pos = record.POS
     l_ref = record.REF
     l_alt = str(record.ALT[0]).replace("')", "").split(", value='")[1]
-
-    if q_chr != l_chr:
-        q_chr = l_chr
-        ncboost_path = f"{db_path}/WG_chr{l_chr}.tsv.gz"
-        tb = tabix.open(ncboost_path)
-    else:
-        tb = tb
     out = []
     ncb_score = ncboost_query_score(l_chr=l_chr, l_pos=l_pos, l_ref=l_ref, l_alt=l_alt, tb=tb)
     if ncb_score != None:
