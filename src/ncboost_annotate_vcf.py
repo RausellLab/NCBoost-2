@@ -26,7 +26,6 @@ def get_nvar_in_file(input_path):
 
 from src.ncboost_functions import ncboost_query_score
 
-# q_chr = '0'
 reader = vcfpy.Reader.from_path(input_path)
 reader.header.add_info_line({'ID' : 'NCBoost', 'Type' : 'Float', 'Description' : 'NCBoost hg38 score', 'Number' : 1})
 writer = vcfpy.Writer.from_path(output_path, reader.header)
