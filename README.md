@@ -48,6 +48,9 @@ The following sections will guide you through the steps needed for the annotatio
 
 ### Downloads, installation and processing of input files
 
+If you only want to add NCBoost score to your variants, follow steps 1 to 5.
+If you want to retrain NCBoost or add all NCBoost features to your variants, follow steps 1 to 2 and 6 to 8.
+
 #### 1. Download NCBoost 2 software
 NCBoost models are stored as github large file object, and require the installation of github-lfs.
 On Linux, github-lfs can be easily installed by running:
@@ -80,24 +83,15 @@ Alternatively, a .yml file containing all conda & pip libraries is also availabl
 conda env create --name ncboost2 --file=ncboost2.yml
 ```
 
+#### 3. Download NCBoost prescored file
+Download the tabix-indexed and index files as describe below, and move them to data/prescored_WG:
+```
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz
+wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
+mv ncboost_v2_hg38_20260202_light.tsv.* data/prescored_WG/
 
-#### 3. Download the feature file
-
-NCBoost v2 features for all possible SNVs at 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz) (total size = 260Go) as per-chromosome compressed tabix-indexed files.
-```
-gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz
-```
-or
-```
-wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
-```
-Unpack the tar file and move the data to the data/ folder:
-```
-tar -zxvf ncboost_v2_hg38_20260202_full.tar.gz
-mv -r ncboost_v2_hg38_20260202_full data/ncboost_v2_prescored/
 ```
 
-Complete details about each features are available at [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 #### 4. Variant input format
 Input SNVs can be fed to NCBoost as either .tsv or .vcf files:
@@ -163,7 +157,25 @@ python src/ncboost_annotate_vcf.py data/testing/testing_data.vcf data/ncboost_v2
 NCBoost's score per-chromosome rank percentile will be added at the end of the INFO field of each variant.
 
 
-#### 6. NCBoost training & SNV anotation with NCBoost features
+#### 6. Download the feature file
+
+NCBoost v2 features for all possible SNVs at 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz) (total size = 260Go) as per-chromosome compressed tabix-indexed files.
+```
+gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz
+```
+or
+```
+wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
+```
+Unpack the tar file and move the data to the data/ folder:
+```
+tar -zxvf ncboost_v2_hg38_20260202_full.tar.gz
+mv -r ncboost_v2_hg38_20260202_full data/ncboost_v2_prescored/
+```
+
+Complete details about each features are available at [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
+
+#### 7. NCBoost training & SNV anotation with NCBoost features
 NCBoost framework can be trained using the ncboost_train.ipynb script. It loads and annotate a set of pathogenic variants and the corresponding set of region-matched random common variants, train the 10 models and produce the corresponding feature importance plot, as well as ROC and PR curves. The trained models are saved and can be used for later scoring.
 
 The annotation requires to download the full set of features used by NCBoost (260 Go). For convenience, we also provide the set of pathogenic and common variants already annotated with NCBoost features, so that re-training does not force one to download the feature file.
@@ -179,7 +191,7 @@ ncboost_train.ipynb should be run through a jupyter notebook environment, while 
 python src/ncboost_train.py
 ```
 
-#### 7. NCBoost model inference
+#### 8. NCBoost model inference
 NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_test.ipynb or its python version equivalent, ncboost_test.py. 
 It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 The annotation requires to download the full set of features used by NCBoost (260Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
