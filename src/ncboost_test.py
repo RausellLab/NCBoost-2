@@ -1,5 +1,6 @@
 import polars as pl
 import os, sys
+sys.path.append('.')
 
 inF = sys.argv[1]
 

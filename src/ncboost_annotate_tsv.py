@@ -1,8 +1,8 @@
 import polars as pl
 import os, sys
 from tqdm import tqdm
-import subprocess
 import tabix
+sys.path.append('.')
 from src.ncboost_functions import get_chr_list, ncboost_query_score
 
 input_path = sys.argv[1]

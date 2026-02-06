@@ -2,8 +2,8 @@ import polars as pl
 import os, sys
 import vcfpy
 import tabix
-import subprocess
 from tqdm import tqdm
+sys.path.append('.')
 
 input_path = sys.argv[1]
 db_path = sys.argv[2]
@@ -17,14 +17,7 @@ db_path = sys.argv[2]
 name, extension = os.path.splitext(input_path)
 output_path = f'{name}_scored.vcf'
 
-def get_nvar_in_file(input_path):
-    command = f"wc -l {input_path}"
-    proc = subprocess.Popen([command], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell = True)
-    out, _ = proc.communicate()
-    l_var = int(out.decode("utf-8").split(' ')[0])
-    return(l_var)
-
-from src.ncboost_functions import ncboost_query_score
+from src.ncboost_functions import ncboost_query_score, get_nvar_in_file
 
 reader = vcfpy.Reader.from_path(input_path)
 reader.header.add_info_line({'ID' : 'NCBoost', 'Type' : 'Float', 'Description' : 'NCBoost hg38 score', 'Number' : 1})
