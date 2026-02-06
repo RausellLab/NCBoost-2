@@ -19,7 +19,7 @@ variants.head()
 
 from ncboost_functions import add_ncboost_features, ncboost_score
 
-variants = add_ncboost_features(variants, db_path='data/WG_annotated')
+variants = add_ncboost_features(variants, db_path='data/ncboost_v2_prescored/ncboost_v2_hg38_20260202_full')
 variants = variants.drop('NCBoost')
 
 variants.write_csv(file=annotated_path, 

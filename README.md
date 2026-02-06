@@ -3,8 +3,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16760945.svg)](https://doi.org/10.5281/zenodo.16760945)
 
 
-## 06 Feb 2026 : prescored files are not available for the moment, due to an administrative issues with google storage.
-## An alternative temporary solution is being set up. 
+## 06 Feb 2026 : prescored files are not available for the moment, due to an administrative issue with google storage. An alternative temporary solution is being set up. 
 
 
 NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
@@ -43,10 +42,9 @@ We advise the users to use the NCBoost_chr_rank_perc rather than NCBoost_score, 
 The NCBoost gene database, integrating several database identifiers (Ensembl, HGNC, NCBI), OMIM disease-gene status and the gene-level conservation features used in this work for more than 19433 protein-codign genes are available [here](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv).
 
 ## NCBoost software
-The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants, or assessing the NCBoost scores for genomic positions other than those included in the precomputed file.
+The NCBoost software is also provided in this repository in case you are interested in training the NCBoost framework on your own variants or your own features, or assessing the NCBoost scores for genomic positions other than those included in the precomputed files.
 
 The following sections will guide you through the steps needed for the annotation of variants, training and execution of NCBoost-2 pretrained models to obtain the pathogenicity score.
-
 
 ### Downloads, installation and processing of input files
 
@@ -56,7 +54,6 @@ On Linux, github-lfs can be easily installed by running:
 ```
 sudo apt install git-lfs
 ```
-
 
 NCBoost scripts and associated data may then be cloned from the NCBoost github repository:
 ```
@@ -185,7 +182,7 @@ python src/ncboost_train.py
 #### 7. NCBoost model inference
 NCBoost framework can be applied to annotate and score any variant using the jupyter notebook ncboost_test.ipynb or its python version equivalent, ncboost_test.py. 
 It will apply the trained framework used to generate the results in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
-The annotation requires to download the full set of features used by NCBoost (132 Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
+The annotation requires to download the full set of features used by NCBoost (260Go).For convenience, we also provide a set of pathogenic and common variants already annotated with NCBoost features, so that scoring does not force one to download the feature file for the corresponding variants.
 
 Don't forget to first activate the environment:
 ```
@@ -203,7 +200,7 @@ Example
 
 The output file will be created in the same folder as the input file, as a tab-delimited text file with the following columns: 
 the chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
-ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[2]](https://github.com/RausellLab/NCBoost-2#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), the 9 MAF from GnomAD [[3]](https://github.com/RausellLab/NCBoost-2#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the SpliceAI score [[4]](https://github.com/RausellLab/NCBoost-2#references) and the NCBoost score and the extra columns provided by the user in the input file.  
+ncGERP, RVIS_percentile, pcGERP), using a reference of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv), 6 one-hot encoded non-coding region types, 18 features extracted from CADD annotation files [[2]](https://github.com/RausellLab/NCBoost-2#references) (GC, CpG, pri/mam/verPhCons, pri/mam/verPhyloP, GerpN, GerpS, GerpRS, GerpRSpval, ZooPriPhyloP, ZooVerPhyloP, bStatistic, ZooRoCC, ZooUCE, Roulette-AR), the 9 MAF from GnomAD [[3]](https://github.com/RausellLab/NCBoost-2#references) (mean_MAF, mean_MAF_AFR/AMI/AMR/ASJ/EAS/FIN/MID/NFE/SAS), the CDTS score, the max SpliceAI score at the variant and at te position level [[4]](https://github.com/RausellLab/NCBoost-2#references), the substitution-encoding features and the NCBoost score and the extra columns provided by the user in the input file.  
 NCBoost score range from 0 to 1 (the higher the value, the higher the predicted pathogenicity).  
 
 More information about the can be found in [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
