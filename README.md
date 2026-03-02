@@ -13,12 +13,12 @@ Of note, the NCBoost software can score any type of genomic position, provided t
 We precomputed the NCBoost score for all variants at 1.88 billion non-coding genomic positions overlapping intergenic, intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded as:
-- [tabix file](https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz) (.gz, 100Go), and [index file](https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz.tbi) (gz.tbi), using wget:
+- [tabix file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz) (.gz, 100Go), and [index file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi) (gz.tbi), using wget:
 ```
 wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz
 wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
 ```
-- [parquet file](https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.parquet) (.parquet, 101Go)
+- [parquet file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.parquet) (.parquet, 101Go)
 ```
 wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.parquet
 ```
