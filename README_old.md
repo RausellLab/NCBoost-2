@@ -2,8 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16760945.svg)](https://doi.org/10.5281/zenodo.16760945)
 
-## 11 Feb 2026 : prescored files have been moved to a new temporary location.
-
+### 11 Feb 2026 : prescored files have been moved to a new temporary location and are now available for download.
 
 NCBoost is a pathogenicity score of non-coding variants to be used in the study of Mendelian diseases. It is based on supervised learning on a comprehensive set of ancient, recent and ongoing purifying selection signals in humans. NCBoost was trained on a collection of 2336 high-confidence pathogenic non-coding variants associated with monogenic Mendelian diseases. NCBoost performs consistently across diverse independent testing data sets and outperforms other existing reference methods. Further information can be found at the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
@@ -14,18 +13,15 @@ Of note, the NCBoost software can score any type of genomic position, provided t
 We precomputed the NCBoost score for all variants at 1.88 billion non-coding genomic positions overlapping intergenic, intronic, 5'UTR, 3'UTR, upstream and downstream regions -i.e. closer than 1kb from the Transcription Start Site (TSS) and the Transcription End Site (TES), respectively- associated with a background set of [19433 protein-coding genes](https://github.com/RausellLab/NCBoost-2/tree/master/data#file-genedb_ncboost2.tsv) for which we could retrieve annotation features. Variant mapping and annotation of non-coding genomic positions was done through [ANNOVAR](http://annovar.openbioinformatics.org/en/latest/user-guide/download/) software using the gene-based annotation option based on RefSeq (assembly version hg38). In the case of positions overlapping several types of regions associated with different genes and transcripts (either coding or non-coding), a number of criteria were adopted as described in the [NCBoost 2 paper](https://www.medrxiv.org/content/10.1101/2025.09.18.25336072v1).
 
 The precomputed hg38 NCBoost 2 scores in proximal cis-regulatory regions of protein-coding genes can be downloaded as:
-- [tabix file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz) (.gz, 100Go), and [index file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi) (gz.tbi), using wget or gsutil:
+- [tabix file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz) (.gz, 100Go), and [index file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi) (gz.tbi), using wget:
 ```
-gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz
-gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
-```
-or
-```
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
 ```
 - [parquet file](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.parquet) (.parquet, 101Go)
-
+```
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.parquet
+```
 
 These files contains the following columns:  
 *chr*, chromosome name, as [1:22,X,Y]  
@@ -85,12 +81,10 @@ conda env create --name ncboost2 --file=ncboost2.yml
 #### 3. Download NCBoost prescored file
 Download the tabix-indexed and index files as describe below, and move them to data/prescored_WG:
 ```
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz
-wget https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_light.tsv.gz.tbi
 mv ncboost_v2_hg38_20260202_light.tsv.* data/prescored_WG/
-
 ```
-
 
 #### 4. Variant input format
 Input SNVs can be fed to NCBoost as either .tsv or .vcf files:
@@ -120,7 +114,6 @@ NCBoost can score files following the format specified just above.
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
 ```
 conda activate ncboost2
-
 ```
 Then run: 
 ```
@@ -141,14 +134,16 @@ NCBoost can also score single-row bi-allelic vcf files. Single-row multi-allelic
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
 ```
 conda activate ncboost2
-
 ```
+
 Then run: 
+
 ```
 python src/ncboost_annotate_vcf.py /path/to_vcf/file /data/ncboost_v2_prescored
 ```
 
 example:
+
 ```
 python src/ncboost_annotate_vcf.py data/testing/testing_data.vcf data/ncboost_v2_prescored
 ```
@@ -158,15 +153,13 @@ NCBoost's score per-chromosome rank percentile will be added at the end of the I
 
 #### 6. Download the feature file
 
-NCBoost v2 features for all possible SNVs at 1,879,856,949 positions are available [here](https://storage.googleapis.com/ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz) (total size = 260Go) as per-chromosome compressed tabix-indexed files.
+NCBoost v2 features for all possible SNVs at 1,879,856,949 positions are available [here](https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_full.tar.gz) (total size = 260Go) as per-chromosome compressed tabix-indexed files.
+
 ```
-gsutil cp gs://ncboost-cbl/ncboost_v2_hg38_20260202_full.tar.gz
-```
-or
-```
-wget https://storage.googleapis.com/ncboost-cbl/WG_annotated.tar.gz
+wget https://nginx.sogam.org/files/ncboost_v2_hg38_20260202_full.tar.gz
 ```
 Unpack the tar file and move the data to the data/ folder:
+
 ```
 tar -zxvf ncboost_v2_hg38_20260202_full.tar.gz
 mv -r ncboost_v2_hg38_20260202_full data/ncboost_v2_prescored/
@@ -182,8 +175,8 @@ The annotation requires to download the full set of features used by NCBoost (26
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
 ```
 conda activate ncboost2
-
 ```
+
 ncboost_train.ipynb should be run through a jupyter notebook environment, while the ncboost_train.py script should be run as follows:
 
 ```
@@ -198,7 +191,6 @@ The annotation requires to download the full set of features used by NCBoost (26
 Don't forget to first activate the environment:
 ```
 conda activate ncboost2
-
 ```
 
 ncboost_test.ipynb should be run through a jupyter notebook environment, while the ncboost_test.py script should be run as follows:
@@ -207,7 +199,9 @@ python src/ncboost_test.py path/to/input/file.tsv
 ```
 
 Example
-``````
+```
+python src/ncboost_test.py data/testing/testing_data.tsv
+```
 
 The output file will be created in the same folder as the input file, as a tab-delimited text file with the following columns: 
 the chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
