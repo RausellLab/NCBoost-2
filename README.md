@@ -115,16 +115,18 @@ Make sure that you are running the scripts from the root of this folder (NCBoost
 NCBoost can score files following the format specified just above.
 
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
-```
-conda activate ncboost2
 
 ```
+conda activate ncboost2
+```
 Then run: 
+
 ```
 python src/ncboost_annotate_tsv.py /path/to/tsv/file /data/ncboost_v2_prescored
 ```
 
 example:
+
 ```
 python src/ncboost_annotate_tsv.py data/testing/testing_data.tsv data/ncboost_v2_prescored
 ```
@@ -138,14 +140,16 @@ NCBoost can also score single-row bi-allelic vcf files. Single-row multi-allelic
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
 ```
 conda activate ncboost2
-
 ```
+
 Then run: 
+
 ```
 python src/ncboost_annotate_vcf.py /path/to_vcf/file /data/ncboost_v2_prescored
 ```
 
 example:
+
 ```
 python src/ncboost_annotate_vcf.py data/testing/testing_data.vcf data/ncboost_v2_prescored
 ```
@@ -195,7 +199,6 @@ The annotation requires to download the full set of features used by NCBoost (26
 Don't forget to first activate the environment:
 ```
 conda activate ncboost2
-
 ```
 
 ncboost_test.ipynb should be run through a jupyter notebook environment, while the ncboost_test.py script should be run as follows:
