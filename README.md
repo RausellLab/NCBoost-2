@@ -183,7 +183,6 @@ The annotation requires to download the full set of features used by NCBoost (26
 Don't forget to first select the ncboost2 environment before running the script in jupyter:
 ```
 conda activate ncboost2
-
 ```
 ncboost_train.ipynb should be run through a jupyter notebook environment, while the ncboost_train.py script should be run as follows:
 
