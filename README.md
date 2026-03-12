@@ -204,7 +204,9 @@ python src/ncboost_test.py path/to/input/file.tsv
 ```
 
 Example
-``````
+```
+python src/ncboost_test.py data/testing/testing_data_annotated.tsv
+```
 
 The output file will be created in the same folder as the input file, as a tab-delimited text file with the following columns: 
 the chromosome, position, reference and alternative allele of the variant, the name and Ensembl Gene ID of the nearest gene to which the variant was associated and the corresponding non-coding region (upstream, downstream, UTR5, UTR3, intronic and intergenic), the gene type and 11 gene-based features (slr_dnds, gene_age, pLI, zscore_mis, zscore_syn, loeuf, GDI, ncRVIS,
